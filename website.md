@@ -8,6 +8,13 @@ Do not stop to ask clarification questions. This is a benchmark prompt. If anyth
 
 The website should feel like a real landing page for an indie voxel sandbox game, not a generic placeholder page.
 
+Important scope boundary:
+
+* This prompt is for building the marketing/information website for the game, not rebuilding the playable game itself.
+* Do not implement the WebGL voxel game in this benchmark unless a minimal embed/link is already present in the project and useful for the site.
+* Use real game screenshots from the first benchmark if they exist.
+* If screenshots are missing, handle that honestly with clearly labelled placeholders and instructions for adding the real screenshots later.
+
 Important context:
 
 * The game is a browser-based WebGL Minecraft-like voxel sandbox prototype.
@@ -265,4 +272,3 @@ Lower-quality answers should score worse for:
 * Asking clarification questions instead of making a decision
 
 Begin by briefly explaining your product/design interpretation, then choose the tooling, justify it, plan, and implement.
-
