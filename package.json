@@ -1,12 +1,23 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
+  "name": "voxl",
+  "version": "1.0.0",
+  "description": "VOXL — an original browser-based WebGL voxel sandbox prototype.",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run typecheck",
+    "screenshot": "bun scripts/screenshot.ts"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.169.0",
+    "typescript": "^5.6.0",
+    "vite": "^5.4.0"
   }
 }
