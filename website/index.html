@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VOX CREST — Build a quiet frontier, block by block</title>
+    <meta name="description" content="Vox Crest is a playable browser voxel sandbox prototype. Procedural terrain, creative flight, chunk-based world. No install, just the frontier." />
+    <meta name="theme-color" content="#0f1419" />
+    <meta property="og:title" content="VOX CREST — Indie Voxel Sandbox Prototype" />
+    <meta property="og:description" content="A compact creative sandbox in the browser. Fly over coasts and highlands, carve caves, raise towers. Built with Three.js + Vite + Bun." />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236BC259'/><text x='16' y='22' text-anchor='middle' font-size='18' fill='%230f1a12' font-family='monospace' font-weight='700'>◈</text></svg>">
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <header class="site-header" role="banner">
+      <div class="container header-inner">
+        <a href="#" class="brand" aria-label="Vox Crest home">
+          <span class="brand-mark" aria-hidden="true">◈</span>
+          <span class="brand-text">VOX <em>CREST</em></span>
+          <span class="brand-sub">Prototype 0.1</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-list" aria-label="Toggle menu">
+            <span class="hamburger" aria-hidden="true"></span>
+          </button>
+          <ul id="nav-list" class="nav-list">
+            <li><a href="#showcase">World</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#controls">Controls</a></li>
+            <li><a href="#tech">Tech</a></li>
+            <li><a href="#status">Status</a></li>
+            <li><a class="btn btn-small btn-ghost" href="/play.html">Play prototype →</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">
+              <span class="dot"></span> Browser WebGL • No install • Creative mode
+            </div>
+            <h1 id="hero-title">Build a <span>quiet frontier</span>, block by block.</h1>
+            <p class="lead">
+              <strong>Vox Crest</strong> is a compact, playable voxel sandbox in your browser. Procedural coasts, hills and highlands, cave mouths and grounded flight — made to be explored, broken, and rebuilt. One seed, one horizon, no loading screens.
+            </p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="/play.html" id="cta-play">▶ Play the prototype</a>
+              <a class="btn btn-ghost" href="#showcase">See the world ↓</a>
+            </div>
+            <div class="hero-meta" role="note">
+              <span><strong>Bun</strong> + Vite + Three.js</span>
+              <span class="meta-sep" aria-hidden="true">•</span>
+              <span>Keyboard + mouse • Desktop</span>
+              <span class="meta-sep" aria-hidden="true">•</span>
+              <span>Press <kbd>P</kbd> to save screenshots</span>
+            </div>
+            <div class="trust-row" aria-label="Quick facts">
+              <span class="chip">Deterministic seeds</span>
+              <span class="chip">16×16 chunk columns</span>
+              <span class="chip">Face-culling mesher</span>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="browser-frame">
+              <div class="browser-bar">
+                <span class="traffic"><i></i><i></i><i></i></span>
+                <span class="bar-title">vox-crest — frontier / 60 FPS</span>
+                <span class="bar-badge">LIVE</span>
+              </div>
+              <div class="browser-screen">
+                <!-- In-game screenshot promoted to hero -->
+                <img id="hero-screenshot" src="/screenshots/in-game.png" alt="Vox Crest in-game view: sunlit hills, trees and water with HUD" loading="eager" />
+                <div id="hero-placeholder" class="img-placeholder hidden">
+                  <div class="ph-grid"></div>
+                  <div class="ph-label">
+                    <span>IN-GAME SCREENSHOT PLACEHOLDER</span>
+                    <small>Run the game, press <kbd>P</kbd> in-game, then save as <code>website/public/screenshots/in-game.png</code> (and <code>screenshots/in-game.png</code>). See instructions below.</small>
+                  </div>
+                </div>
+                <div class="screen-hud">
+                  <span class="hud-pill">✦ FLYING — Space ↑ · Shift ↓</span>
+                  <span class="hud-pill subtle">X 42 · Y 48 · Z 18 · 5 chunks</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-cards">
+              <div class="mini-card">
+                <span class="mini-icon" style="background:#6EC85A"></span>
+                <div><b>Grass → Stone</b><small>Top distinct, strata readable</small></div>
+              </div>
+              <div class="mini-card">
+                <span class="mini-icon" style="background:#E6D8A8"></span>
+                <div><b>Sand at shore</b><small>Beaches ring the water</small></div>
+              </div>
+              <div class="mini-card">
+                <span class="mini-icon" style="background:#4DA3DB"></span>
+                <div><b>Water plane</b><small>Sea level 32, translucent</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PITCH -->
+      <section class="pitch" aria-labelledby="pitch-title">
+        <div class="container narrow">
+          <h2 id="pitch-title">A tiny sandbox that feels like a place.</h2>
+          <p>
+            Most voxel demos are flat fields of cubes. Vox Crest is a <em>slice of world</em>: beach sand gives way to plains, plains fold into hills, hills lift into stone-capped highlands. Trees punctuate the skyline, cave openings cut the slopes, and a low water plane ties it together. You start where the view reads — horizon, depth, and a clear next ridge to crest.
+          </p>
+          <p>
+            It’s creative mode only, deliberately. No survival loop to hide behind. Just movement that feels good, blocks that break and place honestly, and a camera that composes well for the next screenshot.
+          </p>
+        </div>
+      </section>
+
+      <!-- SHOWCASE -->
+      <section class="showcase" aria-labelledby="showcase-title" id="showcase">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="showcase-title">The world, captured live</h2>
+            <p>Both images are real renders from the running game. If you see placeholders, follow the copy steps — no fakes.</p>
+          </div>
+
+          <div class="showcase-grid">
+            <figure class="shot shot-main">
+              <div class="shot-frame">
+                <img id="shot-ingame" src="/screenshots/in-game.png" alt="Vox Crest gameplay: player view over hills, trees, water and clouds with crosshair and hotbar" loading="lazy" />
+                <div id="ph-ingame" class="img-placeholder hidden">
+                  <div class="ph-grid"></div>
+                  <div class="ph-label"><span>IN-GAME PLACEHOLDER</span><small>Add <code>screenshots/in-game.png</code> and <code>website/public/screenshots/in-game.png</code>. Capture with <kbd>P</kbd> in the running game.</small></div>
+                </div>
+              </div>
+              <figcaption>
+                <strong>In-game — the frontier</strong> Terrain depth, grass tops & dirt/stone layers, sand near water, trunks/leaves, water surface, clouds, crosshair + hotbar + coords. Compose from spawn with horizon visible.
+              </figcaption>
+            </figure>
+
+            <figure class="shot shot-menu">
+              <div class="shot-frame">
+                <img id="shot-menu" src="/screenshots/main-menu.png" alt="Vox Crest main menu: title, Play button and settings for seed, view distance and sensitivity" loading="lazy" />
+                <div id="ph-menu" class="img-placeholder hidden">
+                  <div class="ph-grid"></div>
+                  <div class="ph-label"><span>MENU PLACEHOLDER</span><small>Add <code>screenshots/main-menu.png</code> and <code>website/public/screenshots/main-menu.png</code>. Capture with <kbd>P</kbd> at the menu.</small></div>
+                </div>
+              </div>
+              <figcaption>
+                <strong>Main menu — before you crest</strong> Title, seed and settings live on one card. View distance, sensitivity and FOV apply instantly.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="screenshot-help" id="screenshot-help">
+            <h3>Where do screenshots live?</h3>
+            <p>The game saves to your <em>downloads</em> when you press <kbd>P</kbd> (browser security). Move the files to both places the site reads:</p>
+            <div class="code-grid">
+              <div class="code-card">
+                <span class="code-label">Game capture (for benchmark)</span>
+                <code>screenshots/main-menu.png</code>
+                <code>screenshots/in-game.png</code>
+              </div>
+              <div class="code-card">
+                <span class="code-label">Website public (serves at <code>/screenshots/</code>)</span>
+                <code>website/public/screenshots/main-menu.png</code>
+                <code>website/public/screenshots/in-game.png</code>
+              </div>
+            </div>
+            <p class="help-note">Or run <code>bun run capture</code> after <code>bun add -d playwright</code> — it writes both locations automatically. See <code>scripts/capture.ts</code> and the game README.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="features" aria-labelledby="features-title" id="features">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="features-title">What you can actually do</h2>
+            <p>Small feature list, fully playable. No bullet-point fiction.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="f-card">
+              <div class="f-icon" aria-hidden="true">⬢</div>
+              <h3>Procedural terrain</h3>
+              <p>FBM height + biome lerp (ocean → plains → hills → mountains) + domain warp. Same seed = same world. Seed is exposed and editable from the menu.</p>
+            </article>
+            <article class="f-card">
+              <div class="f-icon" aria-hidden="true">▥</div>
+              <h3>Chunk columns</h3>
+              <p>16×16 × 96-high columns, circular view radius 2–8 chunks. `ensureChunksAround` creates/removes meshes; rebuild only on edits. Geometry disposed on unload.</p>
+            </article>
+            <article class="f-card">
+              <div class="f-icon" aria-hidden="true">☁</div>
+              <h3>Flight & gravity</h3>
+              <p>Gravity 28, jump, and creative flight (double-tap Space / <kbd>F</kbd>). Fly-up `Space`, fly-down `Shift`/`Ctrl`, sprint with `Ctrl` while flying. Walking vs flying badge in HUD.</p>
+            </article>
+            <article class="f-card">
+              <div class="f-icon" aria-hidden="true">◰</div>
+              <h3>Break & place</h3>
+              <p>DDA voxel ray, wireframe highlight, hotbar 1–9 + wheel. Nine blocks: Grass, Dirt, Stone, Sand, Wood, Leaves, Water, Brick, Glass. No building inside self.</p>
+            </article>
+            <article class="f-card">
+              <div class="f-icon" aria-hidden="true">▲</div>
+              <h3>Landforms you read</h3>
+              <p>Beaches ring water, hills lift to stone highlands, trees (4–5 trunk + 3-leaf layers) on grass above sea, cave pockets and openings carved by 3D noise.</p>
+            </article>
+            <article class="f-card">
+              <div class="f-icon" aria-hidden="true">◐</div>
+              <h3>Sky that screenshots well</h3>
+              <p>Hemisphere + directional lights, Exp2 fog tied to view distance, two-layer box-cloud clusters drifting slowly. Horizon stays legible at any FOV.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTROLS -->
+      <section class="controls" aria-labelledby="controls-title" id="controls">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="controls-title">Controls</h2>
+            <p>Works without reading the source. Changes apply instantly where it matters.</p>
+          </div>
+          <div class="controls-grid">
+            <div class="control-card">
+              <h3>Move & look</h3>
+              <dl>
+                <div><dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>Move</dd></div>
+                <div><dt><kbd>Mouse</kbd></dt><dd>Look — click canvas to lock</dd></div>
+                <div><dt><kbd>Space</kbd></dt><dd>Jump / fly up (hold)</dd></div>
+                <div><dt><kbd>Shift</kbd> / <kbd>Ctrl</kbd></dt><dd>Fly down</dd></div>
+              </dl>
+            </div>
+            <div class="control-card">
+              <h3>Build & play</h3>
+              <dl>
+                <div><dt><kbd>Double Space</kbd> or <kbd>F</kbd></dt><dd>Toggle flight</dd></div>
+                <div><dt><kbd>Left Click</kbd></dt><dd>Break (bedrock resists)</dd></div>
+                <div><dt><kbd>Right Click</kbd></dt><dd>Place selected block</dd></div>
+                <div><dt><kbd>1</kbd>–<kbd>9</kbd> / <kbd>Scroll</kbd></dt><dd>Hotbar select</dd></div>
+              </dl>
+            </div>
+            <div class="control-card">
+              <h3>System</h3>
+              <dl>
+                <div><dt><kbd>Esc</kbd></dt><dd>Pause / release lock</dd></div>
+                <div><dt><kbd>P</kbd></dt><dd>Screenshot (any state)</dd></div>
+                <div><dt>Sliders</dt><dd>View distance, sensitivity, FOV — live</dd></div>
+              </dl>
+              <p class="control-note">View distance rebuilds chunks and softens fog. Sensitivity scales mouse yaw/pitch. FOV updates camera projection.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TECH -->
+      <section class="tech" aria-labelledby="tech-title" id="tech">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="tech-title">How it’s built</h2>
+            <p>For the curious — without overwhelming the front page.</p>
+          </div>
+          <div class="tech-grid">
+            <div class="tech-main">
+              <h3>For players</h3>
+              <ul>
+                <li>Runs in a modern desktop browser — no install. One `npm`/Bun install and you’re flying.</li>
+                <li>World feels hand-placed but is pure math: seeded value-noise, FBM, biome blends and warps.</li>
+                <li>Blocks are solid colours with vertex shading — grass tops pop, sand lines the shore, water reads translucent.</li>
+              </ul>
+              <h3>For developers</h3>
+              <ul>
+                <li><strong>Game:</strong> Vite + Three.js + TypeScript + Bun. One `MeshLambert` for opaques + one for water per chunk, visible-face culling, AABB with axis-separated collision, DDA ray.</li>
+                <li><strong>Site (this page):</strong> Vite + vanilla HTML/CSS/TS — same toolchain, no framework runtime. Ships &lt; 15 kB CSS + ~2 kB JS. Good Lighthouse buds on low-power devices.</li>
+                <li><strong>Seed + persistence:</strong> `mulberry32` + `hash2`, settings in `localStorage`, edits live but not yet persisted across reloads.</li>
+              </ul>
+              <div class="tech-cta">
+                <a class="btn btn-small btn-ghost" href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener">Read the code</a>
+                <a class="btn btn-small btn-ghost" href="/play.html">Open the game canvas</a>
+              </div>
+            </div>
+            <div class="tech-side">
+              <div class="stack-card">
+                <h4>Stack at a glance</h4>
+                <ul class="stack-list">
+                  <li><span>Rendering</span><strong>Three.js 0.185 + WebGL2</strong></li>
+                  <li><span>Bundling</span><strong>Vite 8 + esbuild</strong></li>
+                  <li><span>Runtime</span><strong>Bun + TypeScript strict</strong></li>
+                  <li><span>Screenshots</span><strong>Canvas → PNG via P + Playwright</strong></li>
+                  <li><span>Site</span><strong>Semantic HTML, 0 framework JS</strong></li>
+                </ul>
+                <div class="perf-note">
+                  <span class="perf-dot"></span> 60 FPS target on typical laptops at view 5. One draw call per chunk (solid) + water.
+                </div>
+              </div>
+              <div class="code-snippet" aria-label="Run locally">
+                <div class="snippet-head">Run locally — one command</div>
+<pre><code>bun install
+bun run dev:all    # site :3001 + game :3000 — open site, click Play
+# or preview built:
+bun run build:all
+bun run preview:all # site :4174 + game :4173</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATUS -->
+      <section class="status" aria-labelledby="status-title" id="status">
+        <div class="container narrow">
+          <h2 id="status-title">Status — honest prototype</h2>
+          <p>
+            This is <strong>not</strong> a finished commercial game. It’s a benchmark prototype built to feel complete in a narrow slice: generation, movement, editing, menus, and screenshots. No survival, no inventory beyond the hotbar, no multiplayer, no save yet. Block edits live for the session; reload reseeds the world.
+          </p>
+          <div class="status-grid">
+            <div class="status-card ok">
+              <h3>Done</h3>
+              <ul>
+                <li>Procedural world with beaches, hills, mountains, caves, trees, water</li>
+                <li>Chunked meshing, fog, clouds, lights that screenshot well</li>
+                <li>Gravity + flight + collision + break/place + hotbar</li>
+                <li>Menu, HUD, pause, view/sensitivity/FOV, P screenshots</li>
+                <li>Game + site both Bun-run, built and previewable</li>
+              </ul>
+            </div>
+            <div class="status-card next">
+              <h3>Next, with more time</h3>
+              <ul>
+                <li>Greedy meshing + vertex AO + break particles</li>
+                <li>Flat water plane + simple reflections</li>
+                <li>Persistent edits via IndexedDB / export</li>
+                <li>Playwright CI that asserts screenshots exist</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta" aria-labelledby="cta-title">
+        <div class="container cta-inner">
+          <div class="cta-copy">
+            <h2 id="cta-title">Crest the next ridge.</h2>
+            <p>No account, no store. Hit Play, lock the mouse, and double-tap Space. If you make something you like, press P — the site needs real screenshots.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary btn-large" href="/play.html">▶ Play Vox Crest</a>
+            <a class="btn btn-ghost btn-large" href="#showcase">How to capture screenshots →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true">◈</span>
+          <div>
+            <div class="footer-title">VOX CREST</div>
+            <div class="footer-sub">An original voxel prototype by a model benchmark. Not affiliated with Mojang/Minecraft. No copyrighted assets.</div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div>
+            <h3>Play</h3>
+            <ul>
+              <li><a href="http://localhost:3000" target="_blank" rel="noopener">Game (dev) — :3000</a></li>
+              <li><a href="http://localhost:4173" target="_blank" rel="noopener">Game (preview) — :4173</a></li>
+              <li><a href="#showcase">Screenshots</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Build</h3>
+            <ul>
+              <li><a href="https://bun.sh" target="_blank" rel="noopener">Bun</a></li>
+              <li><a href="https://vitejs.dev" target="_blank" rel="noopener">Vite</a></li>
+              <li><a href="https://threejs.org" target="_blank" rel="noopener">Three.js</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Meta</h3>
+            <ul>
+              <li><a href="#tech">Technical notes</a></li>
+              <li><a href="#status">Dev status</a></li>
+              <li><a href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener">Feedback → opencode</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-bar">
+        <small>© 2026 Vox Crest prototype. Built with care for a benchmark — meant to be played first, screenshotted second.</small>
+        <small>Keyboard reachable • Reduced-motion aware • Semantic HTML • Alt text on all screenshots</small>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

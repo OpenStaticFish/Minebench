@@ -1,12 +1,37 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
-  "type": "module",
+  "name": "vox-crest",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Vox Crest — indie voxel sandbox prototype",
+  "scripts": {
+    "dev": "vite",
+    "dev:game": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --host",
+    "dev:website": "vite --config website/vite.config.ts",
+    "build:website": "vite build --config website/vite.config.ts",
+    "preview:website": "vite preview --config website/vite.config.ts",
+    "dev:all": "bun run scripts/dev-all.ts",
+    "preview:all": "bun run scripts/preview-all.ts",
+    "start": "bun run dev:all",
+    "build:all": "bun run build && bun run build:website",
+    "sync:screenshots": "bun run scripts/sync-screenshots.ts",
+    "check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit --pretty",
+    "check:website": "tsc --noEmit --project website/tsconfig.json",
+    "capture": "bun run scripts/capture.ts",
+    "capture:manual": "bun run scripts/capture.ts manual"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/three": "^0.185.4",
+    "playwright": "^1.62.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2"
   }
 }

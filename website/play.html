@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Play — VOX CREST</title>
+    <meta name="description" content="Play Vox Crest directly — embedded from the local game server." />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+      :root { --bg:#0f1419; --line:#243140; --accent:#6bc259; --text:#e8eef4; --muted:#9aa8b8; }
+      *{box-sizing:border-box} html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:"JetBrains Mono",monospace}
+      .bar{height:44px;display:flex;align-items:center;gap:10px;padding:0 12px;background:#0f161d;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+      .brand{font-family:"Space Grotesk",sans-serif;font-weight:700;letter-spacing:-0.02em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:8px}
+      .brand i{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#6bc259 0%,#3d8b4a 100%);display:grid;place-items:center;color:#0f1a12;font-style:normal}
+      .spacer{flex:1}
+      .btn{appearance:none;border:1px solid #2d4053;background:#1e2c3a;color:var(--text);padding:6px 10px;border-radius:8px;font-weight:700;font-size:12px;text-decoration:none}
+      .btn-primary{background:linear-gradient(180deg,#6bc259 0%,#4da64a 100%);color:#0f1f12;border-color:#7ed06e}
+      .wrap{height:calc(100% - 44px);position:relative;background:#0b0f13}
+      iframe{width:100%;height:100%;border:0;display:block;background:#87b8e8}
+      .fallback{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;background:radial-gradient(800px 400px at 50% 0%,rgba(107,194,89,0.12),transparent 60%), #0f1419}
+      .fallback.hidden{display:none}
+      .card{max-width:560px;background:linear-gradient(180deg,#1b252f,#131b22);border:1px solid #2a3a4b;border-radius:14px;padding:18px;box-shadow:0 16px 32px rgba(0,0,0,0.35)}
+      .card h1{margin:0 0 8px;font-family:"Space Grotesk",sans-serif;font-size:18px}
+      .card p{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.6}
+      code{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.07);padding:1px 5px;border-radius:4px}
+    </style>
+  </head>
+  <body>
+    <header class="bar" role="banner">
+      <a href="/" class="brand"><i>◈</i> VOX <span style="color:var(--accent)">CREST</span> <small style="color:var(--muted);font-weight:400;margin-left:6px;letter-spacing:0.08em;text-transform:uppercase;font-size:10px">Play</small></a>
+      <span class="spacer"></span>
+      <a href="/" class="btn">← Back to site</a>
+      <a id="pop" href="http://localhost:3000" target="_blank" rel="noopener" class="btn btn-primary">Open in new tab ↗</a>
+    </header>
+    <div class="wrap">
+      <div id="fallback" class="fallback" role="status">
+        <div class="card">
+          <h1>Game server not running</h1>
+          <p>Run the one-command launcher from the repo root:</p>
+          <p><code>bun run dev:all</code> <small style="color:var(--muted)">— launches site :3001 + game :3000 together</small><br>
+          or <code>bun run preview:all</code> after <code>bun run build:all</code></p>
+          <p style="font-size:11px;color:var(--muted)">This page embeds the game from <code id="want"></code>. If you started only the site, start the game too.</p>
+          <p><a href="/" class="btn">Back to site</a> <a id="fallback-pop" href="http://localhost:3000" target="_blank" class="btn btn-primary">Try direct ↗</a></p>
+        </div>
+      </div>
+      <iframe id="frame" title="Vox Crest game" allow="fullscreen; pointer-lock" loading="eager"></iframe>
+    </div>
+    <script>
+      // Pick game URL based on where the site is served
+      const host = location.hostname;
+      const sitePort = location.port;
+      // dev: 3001 → 3000, preview: 4174 → 4173, otherwise default 3000
+      let gamePort = "3000";
+      if (sitePort === "4174") gamePort = "4173";
+      else if (sitePort === "3001") gamePort = "3000";
+      const gameUrl = `http://${host}:${gamePort}/`;
+      const frame = document.getElementById("frame");
+      const fallback = document.getElementById("fallback");
+      const want = document.getElementById("want");
+      const pop = document.getElementById("pop");
+      const pop2 = document.getElementById("fallback-pop");
+      if (want) want.textContent = gameUrl;
+      if (pop) pop.href = gameUrl;
+      if (pop2) pop2.href = gameUrl;
+      if (frame) frame.src = gameUrl;
+
+      // Hide fallback when iframe loads; show if it errors/timeouts
+      let loaded = false;
+      frame.addEventListener("load", () => { loaded = true; if (fallback) fallback.classList.add("hidden"); });
+      setTimeout(() => {
+        if (!loaded) {
+          // Try fetching game URL — if unreachable, keep fallback
+          fetch(gameUrl, { mode: "no-cors" }).catch(() => {});
+          // Keep fallback visible; user can click Pop
+          // But hide after a moment if we think it loaded (no-cors always opaque)
+          // We rely on iframe load event above; if not fired in 3s, keep fallback
+        }
+      }, 2500);
+      // Also hide fallback after 1.5s optimistically if no error
+      setTimeout(() => { if (loaded) fallback.classList.add("hidden"); }, 1500);
+    </script>
+  </body>
+</html>
