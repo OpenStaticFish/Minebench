@@ -1,12 +1,28 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
+  "name": "wildmere",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "check": "tsc --noEmit && prettier --check src scripts play index.html vite.config.ts package.json tsconfig.json README.md SITE.md && bun test",
+    "format": "prettier --write src scripts play index.html vite.config.ts package.json tsconfig.json README.md SITE.md",
+    "screenshots": "bun run scripts/screenshots.ts",
+    "site:check": "bun run scripts/site-checks.ts"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "@fontsource/dm-sans": "^5.3.0",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.58.2",
+    "@types/bun": "latest",
+    "@types/three": "^0.183.1",
+    "prettier": "^3.9.6",
+    "sharp": "^0.35.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   }
 }
