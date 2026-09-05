@@ -1,0 +1,439 @@
+:root {
+  --bg-deep: #16202b;
+  --panel: rgba(18, 26, 36, 0.88);
+  --panel-border: #3d4d5e;
+  --panel-highlight: #5c7288;
+  --text: #e8eef2;
+  --text-dim: #9db0c0;
+  --accent: #7fd44a;
+  --accent-dark: #4a8a31;
+  --danger: #e06c5a;
+  --sun: #ffd98a;
+  --font-pixel: "Press Start 2P", monospace;
+  --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  font-family: var(--font-body);
+  color: var(--text);
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+}
+
+#game-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Small link back to the marketing site (only present on play.html). */
+.back-to-site {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 6;
+  padding: 6px 10px;
+  background: var(--panel);
+  border: 2px solid var(--panel-border);
+  color: var(--text);
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.back-to-site:hover,
+.back-to-site:focus-visible {
+  border-color: var(--panel-highlight);
+}
+
+.mono {
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.webgl-error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+/* ---------- shared pixel-panel look ---------- */
+
+.pixel-panel {
+  background: var(--panel);
+  border: 2px solid var(--panel-border);
+  box-shadow: 0 0 0 2px #0c1116, inset 0 2px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- HUD ---------- */
+
+#hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.hud-top {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.hud-stats {
+  display: flex;
+  gap: 14px;
+  padding: 7px 10px;
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.flying-badge {
+  padding: 7px 10px;
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: #10181f;
+  background: var(--accent);
+  border: 2px solid var(--accent-dark);
+  box-shadow: 0 0 0 2px #0c1116;
+  letter-spacing: 1px;
+}
+
+.crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  position: absolute;
+  background: #e8eef2;
+}
+
+.crosshair::before {
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 18px;
+}
+
+.crosshair::after {
+  top: 8px;
+  left: 0;
+  width: 18px;
+  height: 2px;
+}
+
+.hotbar {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  background: rgba(12, 17, 22, 0.72);
+  border: 2px solid var(--panel-border);
+  box-shadow: 0 0 0 2px #0c1116;
+}
+
+.hotbar-slot {
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.04);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.hotbar-slot img {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+}
+
+.hotbar-slot.selected {
+  border-color: var(--accent);
+  background: rgba(127, 212, 74, 0.14);
+  box-shadow: 0 0 0 2px rgba(127, 212, 74, 0.45);
+}
+
+.hotbar-slot:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 1px;
+}
+
+.hud-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  margin-bottom: 74px;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  top: 68px;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--sun);
+}
+
+/* ---------- overlays (menus) ---------- */
+
+.overlays {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+/* Main menu background: layered sky gradient + blocky clouds */
+.menu-overlay {
+  background: linear-gradient(180deg, #29506e 0%, #3f7ea0 42%, #7db6c9 70%, #d8ecf4 100%);
+}
+
+.menu-clouds {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+    linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7));
+  background-repeat: no-repeat, no-repeat;
+  background-size: 220px 34px, 150px 24px;
+  background-position:
+    12% 22%,
+    74% 34%;
+  filter: blur(1.5px);
+  box-shadow: none;
+  opacity: 0.9;
+}
+
+.menu-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 44px 56px;
+  background: var(--panel);
+  border: 3px solid var(--panel-border);
+  box-shadow:
+    0 0 0 3px #0c1116,
+    0 18px 50px rgba(5, 10, 16, 0.55),
+    inset 0 3px 0 rgba(255, 255, 255, 0.07);
+  max-width: min(92vw, 560px);
+}
+
+.menu-card.small {
+  gap: 12px;
+  padding: 30px 40px;
+}
+
+.game-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(26px, 5.4vw, 44px);
+  letter-spacing: 2px;
+  color: var(--text);
+  text-shadow:
+    3px 3px 0 #0c1116,
+    6px 6px 0 rgba(127, 212, 74, 0.35);
+}
+
+.game-subtitle {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  margin-top: -10px;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 260px;
+}
+
+.menu-btn {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  padding: 13px 16px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid var(--panel-border);
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.12s, border-color 0.12s, transform 0.06s;
+}
+
+.menu-btn:hover {
+  background: rgba(127, 212, 74, 0.16);
+  border-color: var(--accent);
+}
+
+.menu-btn:active {
+  transform: translateY(1px);
+}
+
+.menu-btn.primary {
+  background: var(--accent-dark);
+  border-color: var(--accent);
+}
+
+.menu-btn.primary:hover {
+  background: #57a13b;
+}
+
+.menu-btn.danger:hover {
+  background: rgba(224, 108, 90, 0.2);
+  border-color: var(--danger);
+}
+
+.menu-btn:focus-visible,
+.hotbar-slot:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 2px;
+}
+
+.menu-footer {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.pause-title {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--text);
+  text-shadow: 2px 2px 0 #0c1116;
+  margin-bottom: 6px;
+}
+
+/* settings + controls */
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 340px;
+  max-width: 76vw;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.setting-label {
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.slider-value {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--accent);
+  min-width: 74px;
+  text-align: right;
+}
+
+input[type="range"] {
+  flex: 1;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.controls-table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.controls-table td {
+  padding: 5px 14px;
+  color: var(--text-dim);
+}
+
+.controls-table td:first-child {
+  text-align: right;
+}
+
+.controls-table kbd {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  padding: 4px 7px;
+  white-space: nowrap;
+}
+
+/* pause overlay dims the world behind it */
+.pause-overlay {
+  background: rgba(10, 15, 21, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.settings-overlay,
+.controls-overlay-wrap {
+  background: rgba(10, 15, 21, 0.55);
+}

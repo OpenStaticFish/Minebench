@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Blockvale is a browser-based voxel sandbox prototype: procedural terrain, caves, creative flight, and block building — no install, runs locally in WebGL."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0f1720" />
+    <title>Blockvale — a voxel sandbox in your browser</title>
+    <link rel="preload" as="image" href="/screenshots/in-game.webp" fetchpriority="high" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Main navigation">
+        <a class="brand" href="#top">BLOCKVALE</a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#controls">Controls</a>
+          <a href="#tech">Tech</a>
+          <a href="#status">Status</a>
+        </div>
+        <a class="btn btn-primary btn-small" href="./play.html">Play now</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="clouds" aria-hidden="true">
+          <i class="cloud cloud-a"></i>
+          <i class="cloud cloud-b"></i>
+          <i class="cloud cloud-c"></i>
+        </div>
+        <div class="hero-inner container">
+          <p class="eyebrow">Browser voxel sandbox &middot; playable prototype v0.1</p>
+          <h1 id="hero-title">A voxel world,<br />generated for you.</h1>
+          <p class="hero-lede">
+            Blockvale carves hills, caves, beaches and forests out of a single random seed — then
+            hands you the shovel. Break blocks, build structures, or double-tap Space and fly the
+            whole thing from above. It boots straight in your browser tab: no install, no account,
+            no launcher.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="./play.html">Play in your browser &raquo;</a>
+            <a class="btn btn-ghost" href="#showcase">See it in action</a>
+          </div>
+          <figure class="hero-shot">
+            <img
+              src="/screenshots/in-game.webp"
+              alt="In-game view of Blockvale: a sandy desert shoreline with a blue pond in the foreground, a dense forest of blocky trees on terraced hills behind, and the game HUD showing coordinates, a hotbar of nine block types and a crosshair."
+              width="1280"
+              height="720"
+              fetchpriority="high"
+            />
+            <figcaption>
+              Captured from a real session with the built-in screenshot key (P) — desert shoreline
+              in the foreground, forested hills behind.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="strata" aria-hidden="true">
+          <i class="layer grass"></i><i class="layer dirt"></i><i class="layer stone"></i
+          ><i class="layer bedrock"></i>
+        </div>
+      </section>
+
+      <!-- Pitch -->
+      <section class="section pitch" aria-labelledby="pitch-title">
+        <div class="container">
+          <h2 id="pitch-title">What is Blockvale?</h2>
+          <div class="pitch-grid">
+            <p>
+              Blockvale is a compact voxel sandbox prototype that asks a simple question: how much
+              of a blocky sandbox can live inside one static web page? The answer, it turns out, is
+              a lot. Everything runs locally in WebGL — terrain generation, chunk streaming,
+              lighting, physics and UI. There is no server and no download beyond the page itself.
+            </p>
+            <p>
+              The world is built from seeded noise, so every reload gives you the same handcrafted
+              feeling without any handcrafted terrain: rolling plains, dense forests, deserts,
+              snow-capped mountains, lakes with sandy shores, and cave networks that open onto the
+              surface. Walk, sprint and jump under real gravity — or toggle creative flight and
+              scout the hills from the cloud layer.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Showcase -->
+      <section class="section showcase" id="showcase" aria-labelledby="showcase-title">
+        <div class="container">
+          <h2 id="showcase-title">Straight from the game</h2>
+          <p class="section-lede">
+            Both captures below are real, unretouched screenshots taken by the automated screenshot
+            pipeline (and by pressing P in-game). What you see is what the prototype actually
+            renders.
+          </p>
+          <figure class="shot shot-main">
+            <img
+              src="/screenshots/in-game.webp"
+              alt="Gameplay screenshot of Blockvale showing a desert pond, a forested ridge line, trees, and the HUD: coordinates read-out, FLYING badge and hotbar."
+              width="1280"
+              height="720"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              In-game, flying over a desert shoreline. The HUD shows live coordinates and FPS
+              (top-left), the flight badge (top-right) and the nine-slot hotbar (bottom).
+            </figcaption>
+          </figure>
+          <figure class="shot shot-menu">
+            <img
+              src="/screenshots/main-menu.webp"
+              alt="Blockvale main menu: the game title on a pixel-styled panel above a Start Adventure button, with control hints listed below."
+              width="1280"
+              height="720"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              The main menu, rendered before the pointer is captured: chunk preloading starts behind
+              the panel so the world is ready the moment you press Start.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section features" id="features" aria-labelledby="features-title">
+        <div class="container">
+          <h2 id="features-title">Features</h2>
+          <ul class="feature-grid">
+            <li class="feature">
+              <h3>Procedural terrain</h3>
+              <p>
+                A seeded simplex-noise heightmap builds plains, forests, deserts and mountains —
+                biomes blend into each other instead of snapping at borders.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Caves that surface</h3>
+              <p>
+                3D noise carves cave networks through the underground, complete with openings you
+                can spot — and fall into — while exploring.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Chunk streaming</h3>
+              <p>
+                The world loads in 16&times;64&times;16 chunks around you with strict per-frame
+                budgets, so terrain appears as you move without stuttering.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Break &amp; place blocks</h3>
+              <p>
+                Raycast-targeted block edits with a nine-slot hotbar: stone, planks, logs, leaves,
+                sand, snow, grass and more.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Gravity &amp; creative flight</h3>
+              <p>
+                Walk, sprint and jump with real collision. Double-tap Space (or press F) to toggle
+                flight and see the world from the cloud layer.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Water, beaches &amp; trees</h3>
+              <p>
+                Lakes settle at sea level with sandy shorelines; forests scatter across grasslands
+                with trunks, canopies and soft ambient-occlusion shading.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Procedural sky &amp; clouds</h3>
+              <p>
+                A gradient sky dome, a sun disc, and blocky drifting clouds — all generated at
+                runtime, no image assets involved.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Settings that persist</h3>
+              <p>
+                Render distance, field of view and clouds are adjustable in the pause menu and
+                saved in your browser, so the game feels the way you left it.
+              </p>
+            </li>
+            <li class="feature">
+              <h3>Built-in screenshots</h3>
+              <p>
+                Press P at any time and the browser downloads exactly what you see — the same
+                pipeline that produced every image on this page.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="section controls" id="controls" aria-labelledby="controls-title">
+        <div class="container">
+          <h2 id="controls-title">Controls</h2>
+          <p class="section-lede">
+            Keyboard and mouse, with pointer lock. Every binding also appears in the game's pause
+            menu.
+          </p>
+          <table class="control-table">
+            <caption class="visually-hidden">
+              Keyboard and mouse controls for Blockvale
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Input</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></td>
+                <td>Move</td>
+              </tr>
+              <tr>
+                <td>Mouse</td>
+                <td>Look around (click once to capture the pointer)</td>
+              </tr>
+              <tr>
+                <td><kbd>Space</kbd></td>
+                <td>Jump — or rise while flying</td>
+              </tr>
+              <tr>
+                <td><kbd>Space</kbd> twice</td>
+                <td>Toggle creative flight</td>
+              </tr>
+              <tr>
+                <td><kbd>Shift</kbd></td>
+                <td>Sprint on foot, descend while flying</td>
+              </tr>
+              <tr>
+                <td><kbd>F</kbd></td>
+                <td>Toggle flight</td>
+              </tr>
+              <tr>
+                <td>Left click</td>
+                <td>Break the targeted block</td>
+              </tr>
+              <tr>
+                <td>Right click</td>
+                <td>Place the selected block</td>
+              </tr>
+              <tr>
+                <td><kbd>1</kbd>–<kbd>9</kbd> / mouse wheel</td>
+                <td>Select a hotbar slot</td>
+              </tr>
+              <tr>
+                <td><kbd>Esc</kbd></td>
+                <td>Pause menu, settings and pointer release</td>
+              </tr>
+              <tr>
+                <td><kbd>P</kbd></td>
+                <td>Save a screenshot of the current view</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tech -->
+      <section class="section tech" id="tech" aria-labelledby="tech-title">
+        <div class="container">
+          <h2 id="tech-title">Under the hood</h2>
+          <p class="section-lede">
+            Written in TypeScript on Three.js, built with Vite, scripted with Bun. Some choices that
+            keep it fast:
+          </p>
+          <ul class="tech-list">
+            <li>
+              <strong>Visible faces only.</strong> The mesher emits geometry solely for faces that
+              touch air or water, so a chunk's triangle count stays proportional to its surface,
+              not its volume.
+            </li>
+            <li>
+              <strong>Baked ambient occlusion.</strong> Soft corner shading is computed once at mesh
+              build time and stored in vertex colors — classic voxel AO, with the quad-flip fix to
+              avoid interpolation artifacts.
+            </li>
+            <li>
+              <strong>One atlas, few draw calls.</strong> Every block texture is generated into a
+              single atlas at startup; each chunk renders as one solid mesh plus (optionally) one
+              water mesh.
+            </li>
+            <li>
+              <strong>Budgeted streaming.</strong> Chunk generation and meshing are capped per
+              frame (4 + 2), so exploration stays smooth even in software-rendered headless
+              browsers.
+            </li>
+            <li>
+              <strong>Seeded noise stack.</strong> 2D fBm for the heightmap and biome masks, 3D
+              noise for caves — deterministic from the seed, with no randomness you can't
+              reproduce.
+            </li>
+            <li>
+              <strong>Tested like software.</strong> A headless Playwright harness plays the game in
+              Chromium (software WebGL): it verifies block edits change exactly one voxel, checks
+              gravity and collision, and captures every screenshot on this page.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Status -->
+      <section class="section status" id="status" aria-labelledby="status-title">
+        <div class="container">
+          <h2 id="status-title">Project status</h2>
+          <p class="section-lede">
+            Blockvale is a working prototype — not a finished commercial game. Here is an honest
+            snapshot.
+          </p>
+          <div class="status-grid">
+            <div class="status-card">
+              <h3>Shipped</h3>
+              <ul>
+                <li>Procedural world with biomes, caves, trees and water</li>
+                <li>Block breaking/placing with a nine-slot hotbar</li>
+                <li>Walking, sprinting, jumping and creative flight</li>
+                <li>Main menu, pause, settings with local persistence</li>
+                <li>Automated smoke tests and screenshot pipeline</li>
+              </ul>
+            </div>
+            <div class="status-card">
+              <h3>Known limits</h3>
+              <ul>
+                <li>One fixed world seed per build (same terrain every session)</li>
+                <li>Edits last for the session only — no world saving yet</li>
+                <li>Static water; no flow simulation</li>
+                <li>No mobs, crafting, inventory or multiplayer</li>
+                <li>Desktop keyboard-and-mouse controls only</li>
+              </ul>
+            </div>
+            <div class="status-card">
+              <h3>Next up</h3>
+              <ul>
+                <li>Persistent worlds and multiple seeds</li>
+                <li>Day/night cycle</li>
+                <li>More biome variety and surface decoration</li>
+                <li>Touch-friendly fallback controls</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-band" aria-labelledby="cta-title">
+        <div class="container cta-inner">
+          <h2 id="cta-title">Ready to dig in?</h2>
+          <p>
+            The prototype runs locally in any WebGL-capable desktop browser. One click, one world,
+            already generating.
+          </p>
+          <a class="btn btn-primary btn-big" href="./play.html">Play Blockvale &raquo;</a>
+        </div>
+        <div class="strata" aria-hidden="true">
+          <i class="layer grass"></i><i class="layer dirt"></i><i class="layer stone"></i
+          ><i class="layer bedrock"></i>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="brand footer-brand">BLOCKVALE</p>
+          <p class="footer-note">
+            An indie voxel sandbox prototype built with TypeScript, Three.js and Vite — rendered
+            entirely in your browser.
+          </p>
+        </div>
+        <nav aria-label="Footer">
+          <ul class="footer-links">
+            <li><a href="./play.html">Play the prototype</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#controls">Controls</a></li>
+            <li><a href="#status">Project status</a></li>
+            <li><a href="https://threejs.org" rel="noopener">Built on Three.js</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="container footer-legal">
+        <p>
+          &copy; <span id="year">2026</span> Blockvale. Independent prototype — not affiliated
+          with, endorsed by or connected to Mojang or Microsoft. "Minecraft" is a trademark of
+          Mojang Synergies AB; Blockvale uses none of its assets or branding.
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/site/main.ts"></script>
+  </body>
+</html>

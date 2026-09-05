@@ -1,12 +1,29 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
-  "type": "module",
+  "name": "blockvale",
+  "version": "0.1.0",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run typecheck && bun run build && bun run site:check",
+    "images": "bun scripts/optimize-images.ts",
+    "screenshots": "bun scripts/screenshots.ts",
+    "smoke": "bun scripts/smoke.ts",
+    "site:shots": "bun scripts/site-shots.ts",
+    "site:check": "bun scripts/site-check.ts"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "three": "^0.182.0"
+  },
+  "devDependencies": {
+    "@fontsource/press-start-2p": "^5.2.5",
+    "@types/bun": "latest",
+    "@types/three": "^0.182.0",
+    "playwright": "^1.58.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.3.0"
   }
 }
