@@ -1,12 +1,40 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
+  "name": "cubewild",
+  "version": "0.1.0",
+  "description": "Cubewild — an original browser voxel sandbox prototype (Bun + Vite + TypeScript + Three.js)",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "workspaces": ["site"],
+  "scripts": {
+    "dev": "vite",
+    "dev:all": "bun run scripts/dev-all.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "check": "bun run typecheck && bun test",
+    "shots": "bun run scripts/screenshots.ts",
+    "smoke": "bun run scripts/smoke.ts",
+    "shots:serve": "bun run scripts/serve-dist.ts",
+    "site:dev": "bun run --cwd site dev",
+    "site:build": "bun run --cwd site build",
+    "site:build:full": "bun run --cwd site build:full",
+    "site:preview": "bun run --cwd site preview",
+    "site:typecheck": "bun run --cwd site typecheck",
+    "site:check": "bun run --cwd site check",
+    "site:shots": "bun run --cwd site shots"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "@fontsource/dm-sans": "^5.2.6",
+    "@fontsource/pixelify-sans": "^5.2.6",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/three": "^0.183.0",
+    "bun-types": "^1.4.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0"
   }
 }

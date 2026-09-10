@@ -1,0 +1,28 @@
+<section class="section cta" id="play" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta-panel">
+      <p class="section-kicker">Try it</p>
+      <h2 id="cta-title">Play the prototype in your browser</h2>
+      <p class="cta-lede">
+        Desktop Chrome, Firefox, Safari or Edge with WebGL2. The world generates
+        in a second or two, then WASD and the mouse do the rest.
+      </p>
+      <div class="cta-actions">
+        <a class="button button-primary button-large" href="/play/" data-play-link>Play Cubewild</a>
+        <a class="button button-ghost button-large" href="#controls">Read the controls</a>
+      </div>
+
+      <details class="run-local">
+        <summary>Run the game and this site locally</summary>
+        <pre><code>bun install       <span class="c-comment"># install game + site dependencies</span>
+bun run dev:all   <span class="c-comment"># game → :5173, website → :5174 (Play works)</span></code></pre>
+        <p>
+          The website's Play buttons point at the game dev server automatically
+          and open it in a new tab. For a single deployable folder instead, run
+          <code>bun run site:build:full</code>, which builds the game into
+          <code>site/dist/play</code>.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>

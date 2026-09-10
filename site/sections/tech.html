@@ -1,0 +1,73 @@
+<section class="section section-alt" id="tech" aria-labelledby="tech-title">
+  <div class="container">
+    <header class="section-head">
+      <p class="section-kicker">Technical highlights</p>
+      <h2 id="tech-title">Built like a small engine</h2>
+      <p class="section-lede">
+        Under the HUD this is a real voxel renderer rather than a scene of loose
+        cubes. Here is what is happening each frame.
+      </p>
+    </header>
+
+    <div class="tech-grid">
+      <div class="tech-copy">
+        <ul class="tech-list">
+          <li>
+            <strong>Face-culled chunk meshing.</strong> Only block faces that
+            touch air or water are emitted, with per-vertex ambient occlusion
+            and directional shading baked into vertex colours. No shadow maps,
+            no per-cube draw calls.
+          </li>
+          <li>
+            <strong>Deterministic generation.</strong> Layered Perlin noise plus
+            integer hashing makes every chunk a pure function of seed and
+            coordinates, so chunks generate identically in any order and a seed
+            always rebuilds the same world.
+          </li>
+          <li>
+            <strong>Streaming with a budget.</strong> Chunks generate and mesh
+            from a distance-sorted queue on a per-frame time slice. Far geometry
+            is disposed, and player edits are stored separately and replayed
+            when a chunk regenerates.
+          </li>
+          <li>
+            <strong>Water as a second pass.</strong> Translucent water is its
+            own mesh per chunk with a world-space vertex wave, so the surface
+            stays continuous across chunk borders.
+          </li>
+          <li>
+            <strong>Verified behaviour.</strong> 29 unit tests cover noise,
+            worldgen, meshing and world edits, and a Playwright smoke test
+            drives real mouse and keyboard input to verify breaking, placing,
+            flight, pausing and live settings changes.
+          </li>
+        </ul>
+      </div>
+
+      <div class="tech-side">
+        <figure class="code-card">
+          <figcaption>
+            worldgen.ts — one terrain column, reproducible everywhere
+          </figcaption>
+          <pre><code><span class="c-key">const</span> base = <span class="c-num">62.5</span> + <span class="c-fn">fbm2</span>(baseNoise, x * <span class="c-num">0.0055</span>, z * <span class="c-num">0.0055</span>, <span class="c-num">4</span>) * <span class="c-num">7</span>;
+<span class="c-key">const</span> mask = <span class="c-fn">smoothstep</span>(<span class="c-num">0.05</span>, <span class="c-num">0.78</span>, <span class="c-fn">fbm2</span>(mountainNoise, x * <span class="c-num">0.0016</span>, z * <span class="c-num">0.0016</span>, <span class="c-num">4</span>));
+<span class="c-key">const</span> ridge = <span class="c-fn">ridged2</span>(ridgeNoise, x * <span class="c-num">0.011</span>, z * <span class="c-num">0.011</span>, <span class="c-num">4</span>);
+<span class="c-key">const</span> height = <span class="c-fn">Math.min</span>(<span class="c-num">92</span>, base + rolling + mask * ridge * <span class="c-num">46</span>);</code></pre>
+        </figure>
+
+        <ul class="stat-chips">
+          <li><strong>~2.2 ms</strong><span>to generate one chunk</span></li>
+          <li><strong>2 meshes</strong><span>per chunk, opaque + water</span></li>
+          <li><strong>149 kB</strong><span>game JS, gzipped</span></li>
+          <li><strong>29 + 16</strong><span>unit tests + browser checks</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="tech-stack">
+      Built with Bun, Vite, strict TypeScript and Three.js. Textures, sky and
+      clouds are generated procedurally in code — the project ships no external
+      art.
+    </p>
+  </div>
+</section>

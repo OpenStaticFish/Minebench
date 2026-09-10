@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c131b" />
+    <title>Cubewild — browser voxel sandbox prototype</title>
+    <meta
+      name="description"
+      content="Cubewild is an original browser voxel sandbox prototype: seeded procedural terrain, chunk streaming, creative flight and block editing. Play it in your browser."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cubewild — browser voxel sandbox prototype" />
+    <meta
+      property="og:description"
+      content="Seeded procedural terrain, chunk streaming, creative flight and block editing — a compact voxel sandbox that runs in your browser."
+    />
+    <meta property="og:image" content="/screenshots/in-game-1920.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!--@include header.html-->
+
+    <main id="main">
+      <!--@include hero.html-->
+      <!--@include pitch.html-->
+      <!--@include showcase.html-->
+      <!--@include features.html-->
+      <!--@include controls.html-->
+      <!--@include tech.html-->
+      <!--@include status.html-->
+      <!--@include cta.html-->
+    </main>
+
+    <!--@include footer.html-->
+
+    <dialog id="lightbox" class="lightbox" aria-labelledby="lightbox-title">
+      <div class="lightbox-inner">
+        <div class="lightbox-head">
+          <h2 id="lightbox-title" class="lightbox-title">Screenshot</h2>
+          <button class="lightbox-close" type="button" data-lightbox-close>Close</button>
+        </div>
+        <img class="lightbox-image" alt="" data-lightbox-image />
+        <p class="lightbox-caption" data-lightbox-caption></p>
+      </div>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

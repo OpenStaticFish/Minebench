@@ -6,6 +6,10 @@ out
 dist
 *.tgz
 
+# website generated assets (rebuilt by `bun run site:dev|build`)
+site/.generated
+site/public/screenshots
+
 # code coverage
 coverage
 *.lcov

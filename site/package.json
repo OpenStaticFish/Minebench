@@ -1,0 +1,27 @@
+{
+  "name": "cubewild-site",
+  "version": "0.1.0",
+  "description": "Marketing/information website for the Cubewild voxel sandbox prototype",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run scripts/prepare-assets.ts && vite",
+    "build": "bun run scripts/prepare-assets.ts && vite build",
+    "build:full": "bun run scripts/prepare-assets.ts && vite build && bun run scripts/bundle-game.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run typecheck && bun run build",
+    "shots": "bun run scripts/screenshots.ts"
+  },
+  "dependencies": {
+    "@fontsource/dm-sans": "^5.2.6",
+    "@fontsource/pixelify-sans": "^5.2.6"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun-types": "^1.4.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0"
+  }
+}
