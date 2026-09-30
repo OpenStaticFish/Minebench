@@ -1,12 +1,29 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
+  "name": "verdant-isles",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "scripts": {
+    "dev": "bun run prepare:site && vite --host 0.0.0.0",
+    "build": "bun run prepare:site && tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "check": "bun run prepare:site && tsc --noEmit && bun test",
+    "screenshots": "bun scripts/screenshots.ts",
+    "check:browser": "bun scripts/smoke.ts",
+    "prepare:site": "bun scripts/prepare-site.ts",
+    "check:site": "bun scripts/site-smoke.ts"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "@fontsource/dm-sans": "^5.3.0",
+    "@fontsource/fraunces": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.56.0",
+    "@types/bun": "latest",
+    "@types/three": "^0.180.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7"
   }
 }

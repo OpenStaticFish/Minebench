@@ -1,0 +1,60 @@
+import { chromium, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { mkdir } from 'node:fs/promises';
+
+const browser = await chromium.launch();
+const base = process.env.SITE_URL || 'http://127.0.0.1:5173';
+const errors: string[] = [];
+try {
+  await mkdir('screenshots', { recursive: true });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  page.on('pageerror', e => errors.push(e.message));
+  const requests: string[] = [];
+  page.on('request', request => requests.push(request.url()));
+  await page.goto(base);
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('h1')).toHaveText(/A little world/);
+  for (const id of ['world', 'field-notes', 'controls', 'under-the-hood', 'status']) await expect(page.locator(`#${id}`)).toBeAttached();
+  await page.locator('#field-notes').scrollIntoViewIfNeeded();
+  await expect.poll(() => page.locator('figure img').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
+  expect(await page.locator('img:not([alt])').count()).toBe(0);
+  expect(requests.some(url => /three-[\w-]+\.js|\/src\/main\.ts/.test(url))).toBe(false);
+  await page.locator('[data-lightbox="main-menu"]').click();
+  await expect(page.locator('#screenshot-dialog')).toBeVisible();
+  await expect(page.locator('.lightbox-close')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#screenshot-dialog')).not.toBeVisible();
+  await expect(page.locator('[data-lightbox="main-menu"]')).toBeFocused();
+  const desktopAxe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(desktopAxe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
+  await page.evaluate(() => scrollTo(0,0));
+  await page.locator('[data-lightbox="main-menu"]').evaluate(button => (button as HTMLElement).blur());
+  await page.screenshot({ path: 'screenshots/website-desktop.png', fullPage: true });
+  await page.screenshot({ path: 'screenshots/website-hero.png' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('.nav-toggle')).toBeVisible();
+  await page.locator('.nav-toggle').click();
+  await expect(page.locator('.nav-toggle')).toHaveAttribute('aria-expanded','true');
+  await page.locator('#site-nav a[href="#controls"]').click();
+  await expect(page.locator('.nav-toggle')).toHaveAttribute('aria-expanded','false');
+  for (const width of [320,390,768,1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileAxe = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  expect(mobileAxe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
+  await page.evaluate(() => scrollTo(0,0));
+  await page.screenshot({ path: 'screenshots/website-mobile.png', fullPage: true });
+  await page.locator('.skip-link').focus();
+  await expect(page.locator('.skip-link')).toBeInViewport();
+  expect(errors).toEqual([]);
+  const gameHref = await page.locator('.hero-aside .button').getAttribute('href');
+  const game = await page.request.get(`${base}${gameHref}`);
+  expect(game.ok()).toBe(true);
+  expect(await game.text()).toContain('id="world"');
+  console.log('Website smoke passed: sections, images, no game renderer on website, lightbox/focus/Escape, mobile nav, 320–1440px overflow, desktop/mobile axe scans, skip link, game route.');
+  console.log('Saved screenshots/website-desktop.png and screenshots/website-mobile.png');
+} finally { await browser.close(); }
