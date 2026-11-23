@@ -1,0 +1,148 @@
+/* ─────────────── pixel-art decorations ───────────────
+   All art is inline SVG in index.html (<use href="#…">), so it ships inside the
+   HTML with no image requests and stays crisp at any zoom level. */
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Terrain strata: a 96px band of 16px blocks with a jagged skyline.
+   The band is 6144px wide and centred on the viewport, so block columns sit at
+   fixed offsets from the centre (which is where the plants are anchored). */
+.strata {
+  display: block;
+  flex: none;
+  /* Wider than any viewport on purpose (the reset caps media at 100%). */
+  width: 6144px;
+  max-width: none;
+  height: 96px;
+  margin-left: calc(50% - 3072px);
+  fill: currentColor;
+}
+
+.strata--hang {
+  transform: scaleY(-1);
+}
+
+.plant {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Column centres (px from the viewport centre) and block heights come from the
+   #blocks skyline: [1,3,2,1,2,4,3,2,5,3,1,2,3,4,2,1] × 16px, tile 256px. */
+.plant--tree {
+  --px: 5px;
+  left: calc(50% - 603px);
+  bottom: 48px;
+}
+
+.plant--tree-small {
+  --px: 3.5px;
+  left: calc(50% - 659px);
+  bottom: 16px;
+}
+
+.plant--bush {
+  --px: 8px;
+  left: calc(50% + 646px);
+  bottom: 48px;
+}
+
+.plant--tree,
+.plant--tree-small {
+  width: calc(13 * var(--px));
+  height: calc(16 * var(--px));
+}
+
+.plant--bush {
+  width: calc(4 * var(--px));
+  height: calc(4 * var(--px));
+}
+
+/* Blocky clouds drift across the sky sections. Pure CSS; disabled for reduced motion.
+   The top two stay in the strip between the header and the headline; the third
+   passes behind the hero capture and only shows at its sides. */
+.cloud {
+  position: absolute;
+  z-index: 0;
+  width: 288px;
+  height: 72px;
+  animation: drift 110s linear infinite;
+}
+
+.cloud--1 {
+  top: 0.5rem;
+  width: 192px;
+  height: 48px;
+  animation-delay: -30s;
+}
+
+.cloud--2 {
+  top: 2rem;
+  width: 128px;
+  height: 32px;
+  animation-duration: 150s;
+  animation-delay: -95s;
+}
+
+.cloud--3 {
+  bottom: 14rem;
+  animation-duration: 170s;
+  animation-delay: -60s;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-360px);
+  }
+
+  to {
+    transform: translateX(calc(100vw + 360px));
+  }
+}
+
+@media (max-width: 1180px) {
+  .plant {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Only one small cloud fits between the header and the headline on phones. */
+  .cloud--2,
+  .cloud--3 {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .cloud {
+    animation: none;
+  }
+
+  .cloud--1 {
+    left: 6vw;
+  }
+
+  .cloud--2 {
+    right: 8vw;
+  }
+
+  .cloud--3 {
+    display: none;
+  }
+
+  .btn,
+  .card {
+    transition: none;
+  }
+}

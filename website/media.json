@@ -1,0 +1,109 @@
+{
+  "generated": "2026-11-23T11:02:04.322Z",
+  "shots": {
+    "flight": {
+      "width": 1600,
+      "height": 900,
+      "variants": [
+        {
+          "width": 640,
+          "file": "flight-640.webp"
+        },
+        {
+          "width": 960,
+          "file": "flight-960.webp"
+        },
+        {
+          "width": 1280,
+          "file": "flight-1280.webp"
+        },
+        {
+          "width": 1600,
+          "file": "flight-1600.webp"
+        }
+      ]
+    },
+    "in-game": {
+      "width": 1600,
+      "height": 900,
+      "variants": [
+        {
+          "width": 640,
+          "file": "in-game-640.webp"
+        },
+        {
+          "width": 960,
+          "file": "in-game-960.webp"
+        },
+        {
+          "width": 1280,
+          "file": "in-game-1280.webp"
+        },
+        {
+          "width": 1600,
+          "file": "in-game-1600.webp"
+        }
+      ]
+    },
+    "main-menu": {
+      "width": 1600,
+      "height": 900,
+      "variants": [
+        {
+          "width": 640,
+          "file": "main-menu-640.webp"
+        },
+        {
+          "width": 960,
+          "file": "main-menu-960.webp"
+        },
+        {
+          "width": 1280,
+          "file": "main-menu-1280.webp"
+        },
+        {
+          "width": 1600,
+          "file": "main-menu-1600.webp"
+        }
+      ]
+    },
+    "settings": {
+      "width": 1600,
+      "height": 900,
+      "variants": [
+        {
+          "width": 640,
+          "file": "settings-640.webp"
+        },
+        {
+          "width": 960,
+          "file": "settings-960.webp"
+        },
+        {
+          "width": 1280,
+          "file": "settings-1280.webp"
+        },
+        {
+          "width": 1600,
+          "file": "settings-1600.webp"
+        }
+      ]
+    }
+  },
+  "icons": [
+    "grass",
+    "dirt",
+    "stone",
+    "cobblestone",
+    "sand",
+    "log",
+    "leaves",
+    "planks",
+    "glass",
+    "water",
+    "snow",
+    "coal-ore",
+    "iron-ore",
+    "lamp"
+  ]
+}

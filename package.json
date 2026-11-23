@@ -1,12 +1,34 @@
 {
-  "name": "model-craft-test",
-  "module": "index.ts",
-  "type": "module",
+  "name": "loamlands",
+  "version": "0.1.0",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "type": "module",
+  "description": "Loamlands \u2014 an original browser voxel sandbox prototype (three.js + Vite) and its marketing site.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check",
+    "format": "biome check --write",
+    "test": "bun test",
+    "check": "bun run typecheck && bun run lint && bun test",
+    "images": "bun run scripts/images.ts",
+    "screenshot": "bun run scripts/screenshot.ts",
+    "test:e2e": "bun run scripts/e2e.ts",
+    "site:check": "bun run scripts/site-check.ts",
+    "verify": "bun run check && bun run test:e2e && bun run site:check"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "dependencies": {
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.8",
+    "@types/bun": "^1.4.5",
+    "@types/three": "^0.187.0",
+    "axe-core": "^4.14.1",
+    "playwright": "^1.65.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
   }
 }

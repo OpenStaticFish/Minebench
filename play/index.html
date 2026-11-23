@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Loamlands — a voxel sandbox prototype</title>
+    <meta
+      name="description"
+      content="Loamlands is an original browser-based voxel sandbox prototype: procedural terrain, creative flight, block building."
+    />
+    <meta name="theme-color" content="#1b231b" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,2 30,9 16,16 2,9' fill='%238ad656'/%3E%3Cpolygon points='2,9 16,16 16,30 2,23' fill='%239c6b40'/%3E%3Cpolygon points='30,9 30,23 16,30 16,16' fill='%23777b80'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/game/style.css" />
+  </head>
+  <body>
+    <canvas id="game" aria-label="Loamlands 3D game view"></canvas>
+
+    <div id="ui" data-screen="menu">
+      <!-- Main menu -->
+      <section id="screen-menu" class="screen screen--menu" aria-labelledby="title">
+        <div class="menu">
+          <header class="brand">
+            <div class="brand__mark" aria-hidden="true">
+              <i class="brand__face brand__face--top"></i>
+              <i class="brand__face brand__face--left"></i>
+              <i class="brand__face brand__face--right"></i>
+            </div>
+            <h1 id="title" class="brand__title">Loamlands</h1>
+            <p class="brand__tagline">An original voxel sandbox · creative prototype</p>
+          </header>
+
+          <div class="panel menu__panel">
+            <label class="field" for="seed">
+              <span class="field__label">World seed</span>
+              <span class="field__control">
+                <input id="seed" class="input" type="text" value="dune" maxlength="32" spellcheck="false" autocomplete="off" />
+                <button id="btn-seed-random" class="btn btn--icon" type="button" title="Random seed" aria-label="Random seed">⟳</button>
+              </span>
+            </label>
+            <button id="btn-play" class="btn btn--primary btn--wide" type="button">Play</button>
+            <div class="menu__row">
+              <button id="btn-settings" class="btn" type="button">Settings</button>
+              <button id="btn-controls" class="btn" type="button">Controls</button>
+            </div>
+            <div id="menu-progress" class="progress" role="status" aria-live="polite">
+              <div class="progress__bar"><span id="progress-fill" class="progress__fill"></span></div>
+              <span id="progress-text" class="progress__text">Carving terrain…</span>
+            </div>
+          </div>
+
+          <footer class="menu__footer">
+            <span>v0.1.0 · prototype build</span>
+            <span>WebGL2 · runs entirely in your browser</span>
+          </footer>
+        </div>
+      </section>
+
+      <!-- Pause menu -->
+      <section id="screen-pause" class="screen screen--dim" aria-labelledby="pause-title" hidden>
+        <div class="panel panel--narrow">
+          <h2 id="pause-title" class="panel__title">Paused</h2>
+          <p class="panel__hint">Press <kbd>Esc</kbd> any time to get here. Your world is frozen, not gone.</p>
+          <button id="btn-resume" class="btn btn--primary btn--wide" type="button">Resume</button>
+          <div class="menu__row">
+            <button id="btn-pause-settings" class="btn" type="button">Settings</button>
+            <button id="btn-pause-controls" class="btn" type="button">Controls</button>
+          </div>
+          <button id="btn-pause-screenshot" class="btn btn--wide" type="button">Save screenshot <kbd>P</kbd></button>
+          <button id="btn-quit" class="btn btn--quiet btn--wide" type="button">Quit to title</button>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="screen-settings" class="screen screen--dim" aria-labelledby="settings-title" hidden>
+        <div class="panel">
+          <h2 id="settings-title" class="panel__title">Settings</h2>
+          <p class="panel__hint">Changes apply immediately and are remembered on this device.</p>
+          <div class="settings">
+            <div class="setting">
+              <label class="setting__head" for="set-viewDistance"><span>View distance</span><output id="out-viewDistance"></output></label>
+              <input id="set-viewDistance" type="range" min="3" max="12" step="1" />
+              <p class="setting__help">Chunks meshed around you. Lower it if the frame rate dips.</p>
+            </div>
+            <div class="setting">
+              <label class="setting__head" for="set-sensitivity"><span>Mouse sensitivity</span><output id="out-sensitivity"></output></label>
+              <input id="set-sensitivity" type="range" min="0.2" max="2" step="0.05" />
+            </div>
+            <div class="setting">
+              <label class="setting__head" for="set-fov"><span>Field of view</span><output id="out-fov"></output></label>
+              <input id="set-fov" type="range" min="60" max="110" step="1" />
+            </div>
+            <div class="setting">
+              <label class="setting__head" for="set-renderScale"><span>Render scale</span><output id="out-renderScale"></output></label>
+              <input id="set-renderScale" type="range" min="0.5" max="2" step="0.25" />
+              <p class="setting__help">Resolution multiplier. 1 = native (capped at 2× device pixel ratio).</p>
+            </div>
+            <label class="setting setting--toggle" for="set-clouds">
+              <input id="set-clouds" type="checkbox" />
+              <span class="setting__switch" aria-hidden="true"></span>
+              <span>Clouds</span>
+            </label>
+            <label class="setting setting--toggle" for="set-debugOverlay">
+              <input id="set-debugOverlay" type="checkbox" />
+              <span class="setting__switch" aria-hidden="true"></span>
+              <span>Debug stats <kbd>F3</kbd></span>
+            </label>
+            <label class="setting setting--toggle" for="set-hudStats">
+              <input id="set-hudStats" type="checkbox" />
+              <span class="setting__switch" aria-hidden="true"></span>
+              <span>Stats panel <kbd>H</kbd></span>
+            </label>
+          </div>
+          <div class="menu__row menu__row--end">
+            <button id="btn-settings-reset" class="btn btn--quiet" type="button">Reset</button>
+            <button id="btn-settings-back" class="btn" type="button">Back</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section id="screen-controls" class="screen screen--dim" aria-labelledby="controls-title" hidden>
+        <div class="panel">
+          <h2 id="controls-title" class="panel__title">Controls</h2>
+          <table class="controls">
+            <tbody>
+              <tr><th scope="row"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></th><td>Move</td></tr>
+              <tr><th scope="row">Mouse</th><td>Look around</td></tr>
+              <tr><th scope="row"><kbd>Space</kbd></th><td>Jump · swim up · fly up</td></tr>
+              <tr><th scope="row"><kbd>Space</kbd> ×2</th><td>Toggle flying (land to stop flying)</td></tr>
+              <tr><th scope="row"><kbd>Shift</kbd></th><td>Sprint while walking · fly down</td></tr>
+              <tr><th scope="row">Left click</th><td>Break block (hold to keep breaking)</td></tr>
+              <tr><th scope="row">Right click</th><td>Place block (hold to keep placing)</td></tr>
+              <tr><th scope="row"><kbd>1</kbd>–<kbd>9</kbd> / Scroll</th><td>Select hotbar slot</td></tr>
+              <tr><th scope="row"><kbd>Esc</kbd></th><td>Pause and release the mouse</td></tr>
+              <tr><th scope="row"><kbd>P</kbd></th><td>Save a screenshot of the view</td></tr>
+              <tr><th scope="row"><kbd>F3</kbd></th><td>Toggle debug stats</td></tr>
+              <tr><th scope="row"><kbd>H</kbd></th><td>Hide or show the stats panel</td></tr>
+            </tbody>
+          </table>
+          <button id="btn-controls-back" class="btn btn--wide" type="button">Back</button>
+        </div>
+      </section>
+
+      <!-- In-game HUD -->
+      <div id="hud" class="hud" hidden>
+        <div class="crosshair" aria-hidden="true"></div>
+        <div class="hud__corner hud__corner--tl">
+          <section class="hud-panel stats" aria-label="Player stats">
+            <div class="stats__row"><span>FPS</span><b id="stat-fps">–</b></div>
+            <div class="stats__row"><span>XYZ</span><b id="stat-pos">–</b></div>
+            <div class="stats__row"><span>Chunk</span><b id="stat-chunk">–</b></div>
+            <div class="stats__row"><span>Biome</span><b id="stat-biome">–</b></div>
+            <div class="stats__row stats__row--debug"><span>Frame</span><b id="stat-frame">–</b></div>
+            <div class="stats__row stats__row--debug"><span>Draws</span><b id="stat-draws">–</b></div>
+            <div class="stats__row stats__row--debug"><span>Tris</span><b id="stat-tris">–</b></div>
+            <div class="stats__row stats__row--debug"><span>Chunks</span><b id="stat-chunks">–</b></div>
+          </section>
+          <div id="mode-badge" class="badge">Walking</div>
+        </div>
+        <div class="hud__corner hud__corner--tr">
+          <div class="hud-panel keys-hint"><kbd>Esc</kbd> menu<span></span><kbd>P</kbd> photo<span></span><kbd>F3</kbd> debug</div>
+        </div>
+        <div id="block-label" class="block-label">Grass Block</div>
+        <div id="hotbar" class="hotbar" role="toolbar" aria-label="Block hotbar"></div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div id="lock-hint" class="lock-hint" hidden>Click the world to capture the mouse</div>
+        <div id="water-tint" class="water-tint" aria-hidden="true"></div>
+      </div>
+
+      <!-- Fatal error -->
+      <div id="fatal" class="screen screen--dim" role="alert" hidden>
+        <div class="panel panel--narrow">
+          <h2 class="panel__title">Loamlands needs WebGL 2</h2>
+          <p class="panel__hint" id="fatal-message">
+            Your browser could not create a WebGL 2 context. Try a current version of Chrome, Edge, Firefox or Safari
+            with hardware acceleration enabled.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <noscript>
+      <div class="screen screen--dim">
+        <div class="panel panel--narrow"><h2 class="panel__title">JavaScript required</h2></div>
+      </div>
+    </noscript>
+
+    <script type="module" src="/game/main.ts"></script>
+  </body>
+</html>

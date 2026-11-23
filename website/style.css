@@ -1,0 +1,9 @@
+/*
+ * Loamlands website stylesheet. Split by concern, bundled by Vite into one file:
+ *   base.css     tokens, reset, typography, shared components (buttons, tags, header, footer)
+ *   decor.css    pixel-art decorations: terrain strata, plants, clouds
+ *   sections.css layout of each page section
+ */
+@import "./styles/base.css";
+@import "./styles/decor.css";
+@import "./styles/sections.css";

@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Loamlands — a voxel world that grows in your browser</title>
+    <meta
+      name="description"
+      content="Loamlands is an original voxel sandbox prototype for the browser: seeded procedural terrain with biomes, caves and trees, creative flight, and block building. Free, no install."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Loamlands" />
+    <meta property="og:title" content="Loamlands — a voxel world that grows in your browser" />
+    <meta
+      property="og:description"
+      content="Seeded procedural terrain, creative flight and block building in a browser tab. Free, no install."
+    />
+    <!--social-image name="in-game"-->
+    <meta name="theme-color" content="#0d120d" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,2 30,9 16,16 2,9' fill='%2386d04f'/%3E%3Cpolygon points='2,9 16,16 16,30 2,23' fill='%239c6b40'/%3E%3Cpolygon points='30,9 30,23 16,30 16,16' fill='%238a8f94'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/website/style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <!-- Shared pixel art: terrain strata, plants and the logo cube. Referenced with <use>. -->
+    <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="px-dirt" width="16" height="16" patternUnits="userSpaceOnUse">
+          <rect width="16" height="16" fill="#9c6b40" />
+          <rect x="2" y="3" width="5" height="4" fill="#7a4e2d" />
+          <rect x="9" y="10" width="5" height="4" fill="#7a4e2d" />
+          <rect x="10" y="2" width="3" height="3" fill="#b07c4e" />
+        </pattern>
+        <pattern id="px-grass" width="16" height="8" patternUnits="userSpaceOnUse">
+          <rect width="16" height="8" fill="#7ccb45" />
+          <rect x="1" y="1" width="4" height="2" fill="#5da83a" />
+          <rect x="8" y="4" width="5" height="2" fill="#9fe267" />
+          <rect x="3" y="5" width="3" height="2" fill="#5da83a" />
+        </pattern>
+      </defs>
+<g id="blocks">
+  <rect x="0" y="80" width="16" height="16"/>
+  <rect x="16" y="48" width="16" height="48"/>
+  <rect x="32" y="64" width="16" height="32"/>
+  <rect x="48" y="80" width="16" height="16"/>
+  <rect x="64" y="64" width="16" height="32"/>
+  <rect x="80" y="32" width="16" height="64"/>
+  <rect x="96" y="48" width="16" height="48"/>
+  <rect x="112" y="64" width="16" height="32"/>
+  <rect x="128" y="16" width="16" height="80"/>
+  <rect x="144" y="48" width="16" height="48"/>
+  <rect x="160" y="80" width="16" height="16"/>
+  <rect x="176" y="64" width="16" height="32"/>
+  <rect x="192" y="48" width="16" height="48"/>
+  <rect x="208" y="32" width="16" height="64"/>
+  <rect x="224" y="64" width="16" height="32"/>
+  <rect x="240" y="80" width="16" height="16"/>
+  <g fill="#fff" opacity=".2">
+    <rect x="0" y="80" width="16" height="5"/>
+    <rect x="16" y="48" width="16" height="5"/>
+    <rect x="32" y="64" width="16" height="5"/>
+    <rect x="48" y="80" width="16" height="5"/>
+    <rect x="64" y="64" width="16" height="5"/>
+    <rect x="80" y="32" width="16" height="5"/>
+    <rect x="96" y="48" width="16" height="5"/>
+    <rect x="112" y="64" width="16" height="5"/>
+    <rect x="128" y="16" width="16" height="5"/>
+    <rect x="144" y="48" width="16" height="5"/>
+    <rect x="160" y="80" width="16" height="5"/>
+    <rect x="176" y="64" width="16" height="5"/>
+    <rect x="192" y="48" width="16" height="5"/>
+    <rect x="208" y="32" width="16" height="5"/>
+    <rect x="224" y="64" width="16" height="5"/>
+    <rect x="240" y="80" width="16" height="5"/>
+  </g>
+  <g fill="#000" opacity=".14">
+    <rect x="4" y="88" width="4" height="4"/>
+    <rect x="20" y="72" width="4" height="4"/>
+    <rect x="20" y="56" width="4" height="4"/>
+    <rect x="36" y="80" width="4" height="4"/>
+    <rect x="84" y="76" width="4" height="4"/>
+    <rect x="84" y="44" width="4" height="4"/>
+    <rect x="100" y="64" width="4" height="4"/>
+    <rect x="116" y="84" width="4" height="4"/>
+    <rect x="132" y="80" width="4" height="4"/>
+    <rect x="132" y="56" width="4" height="4"/>
+    <rect x="148" y="68" width="4" height="4"/>
+    <rect x="180" y="76" width="4" height="4"/>
+    <rect x="196" y="56" width="4" height="4"/>
+    <rect x="212" y="80" width="4" height="4"/>
+    <rect x="212" y="48" width="4" height="4"/>
+    <rect x="228" y="68" width="4" height="4"/>
+  </g>
+</g>
+<g id="terrain">
+  <rect x="0" y="86" width="16" height="10" fill="url(#px-dirt)"/>
+  <rect x="16" y="54" width="16" height="42" fill="url(#px-dirt)"/>
+  <rect x="32" y="70" width="16" height="26" fill="url(#px-dirt)"/>
+  <rect x="48" y="86" width="16" height="10" fill="url(#px-dirt)"/>
+  <rect x="64" y="70" width="16" height="26" fill="url(#px-dirt)"/>
+  <rect x="80" y="38" width="16" height="58" fill="url(#px-dirt)"/>
+  <rect x="96" y="54" width="16" height="42" fill="url(#px-dirt)"/>
+  <rect x="112" y="70" width="16" height="26" fill="url(#px-dirt)"/>
+  <rect x="128" y="22" width="16" height="74" fill="url(#px-dirt)"/>
+  <rect x="144" y="54" width="16" height="42" fill="url(#px-dirt)"/>
+  <rect x="160" y="86" width="16" height="10" fill="url(#px-dirt)"/>
+  <rect x="176" y="70" width="16" height="26" fill="url(#px-dirt)"/>
+  <rect x="192" y="54" width="16" height="42" fill="url(#px-dirt)"/>
+  <rect x="208" y="38" width="16" height="58" fill="url(#px-dirt)"/>
+  <rect x="224" y="70" width="16" height="26" fill="url(#px-dirt)"/>
+  <rect x="240" y="86" width="16" height="10" fill="url(#px-dirt)"/>
+  <rect x="0" y="80" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="16" y="48" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="32" y="64" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="48" y="80" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="64" y="64" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="80" y="32" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="96" y="48" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="112" y="64" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="128" y="16" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="144" y="48" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="160" y="80" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="176" y="64" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="192" y="48" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="208" y="32" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="224" y="64" width="16" height="6" fill="url(#px-grass)"/>
+  <rect x="240" y="80" width="16" height="6" fill="url(#px-grass)"/>
+</g>
+<g id="tree" shape-rendering="crispEdges">
+  <rect x="5" y="0" width="3" height="1" fill="#6fc247"/>
+  <rect x="4" y="1" width="5" height="1" fill="#6fc247"/>
+  <rect x="3" y="2" width="2" height="1" fill="#6fc247"/>
+  <rect x="5" y="2" width="2" height="1" fill="#3e8a2e"/>
+  <rect x="7" y="2" width="3" height="1" fill="#6fc247"/>
+  <rect x="2" y="3" width="9" height="1" fill="#6fc247"/>
+  <rect x="2" y="4" width="1" height="1" fill="#6fc247"/>
+  <rect x="3" y="4" width="1" height="1" fill="#3e8a2e"/>
+  <rect x="4" y="4" width="5" height="1" fill="#6fc247"/>
+  <rect x="9" y="4" width="1" height="1" fill="#3e8a2e"/>
+  <rect x="10" y="4" width="1" height="1" fill="#6fc247"/>
+  <rect x="1" y="5" width="11" height="1" fill="#6fc247"/>
+  <rect x="1" y="6" width="2" height="1" fill="#6fc247"/>
+  <rect x="3" y="6" width="1" height="1" fill="#3e8a2e"/>
+  <rect x="4" y="6" width="5" height="1" fill="#6fc247"/>
+  <rect x="9" y="6" width="1" height="1" fill="#3e8a2e"/>
+  <rect x="10" y="6" width="2" height="1" fill="#6fc247"/>
+  <rect x="2" y="7" width="9" height="1" fill="#6fc247"/>
+  <rect x="3" y="8" width="7" height="1" fill="#6fc247"/>
+  <rect x="4" y="9" width="5" height="1" fill="#6fc247"/>
+  <rect x="5" y="10" width="1" height="1" fill="#5b3d22"/>
+  <rect x="6" y="10" width="1" height="1" fill="#8a6238"/>
+  <rect x="7" y="10" width="1" height="1" fill="#5b3d22"/>
+  <rect x="5" y="11" width="1" height="1" fill="#5b3d22"/>
+  <rect x="6" y="11" width="1" height="1" fill="#8a6238"/>
+  <rect x="7" y="11" width="1" height="1" fill="#5b3d22"/>
+  <rect x="5" y="12" width="1" height="1" fill="#5b3d22"/>
+  <rect x="6" y="12" width="1" height="1" fill="#8a6238"/>
+  <rect x="7" y="12" width="1" height="1" fill="#5b3d22"/>
+  <rect x="5" y="13" width="1" height="1" fill="#5b3d22"/>
+  <rect x="6" y="13" width="1" height="1" fill="#8a6238"/>
+  <rect x="7" y="13" width="1" height="1" fill="#5b3d22"/>
+  <rect x="4" y="14" width="4" height="1" fill="#8a6238"/>
+</g>
+<g id="bush" shape-rendering="crispEdges">
+  <rect x="1" y="1" width="2" height="1" fill="#6fc247"/>
+  <rect x="0" y="2" width="2" height="1" fill="#6fc247"/>
+  <rect x="2" y="2" width="1" height="1" fill="#3e8a2e"/>
+  <rect x="3" y="2" width="1" height="1" fill="#6fc247"/>
+  <rect x="0" y="3" width="1" height="1" fill="#6fc247"/>
+  <rect x="1" y="3" width="1" height="1" fill="#3e8a2e"/>
+  <rect x="2" y="3" width="2" height="1" fill="#6fc247"/>
+</g>
+      <symbol id="cube" viewBox="0 0 32 32">
+        <polygon points="16,2 30,9 16,16 2,9" fill="#86d04f" />
+        <polygon points="2,9 16,16 16,30 2,23" fill="#9c6b40" />
+        <polygon points="30,9 30,23 16,30 16,16" fill="#8a8f94" />
+        <polygon points="19,6.5 23,8.5 20,10 16,8" fill="#a6e76d" />
+        <polygon points="6,15 9,16.5 9,19 6,17.5" fill="#7a4e2d" />
+        <polygon points="11,20 13,21 13,23.5 11,22.5" fill="#7a4e2d" />
+        <polygon points="22,17 25,18.5 25,21 22,19.5" fill="#6e7378" />
+        <polygon points="18,22 20,23 20,25.5 18,24.5" fill="#a7acb1" />
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <div class="wrap site-header__row">
+        <a class="brand" href="#top">
+          <svg class="brand__mark" aria-hidden="true" focusable="false"><use href="#cube" /></svg>
+          <span class="brand__name">Loamlands</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav__list">
+            <li><a href="#about">About</a></li>
+            <li><a href="#screens">Screens</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#controls">Controls</a></li>
+            <li><a href="#tech">Under the surface</a></li>
+            <li><a href="#status">Status</a></li>
+          </ul>
+        </nav>
+        <a class="btn btn--primary btn--small site-header__cta" href="./play/">Play now</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <svg class="cloud cloud--1" viewBox="0 0 96 24" aria-hidden="true" focusable="false">
+          <g fill="#fff" opacity=".92">
+            <rect x="16" y="8" width="56" height="16" />
+            <rect x="28" y="0" width="32" height="8" />
+            <rect x="0" y="16" width="96" height="8" />
+          </g>
+        </svg>
+        <svg class="cloud cloud--2" viewBox="0 0 64 16" aria-hidden="true" focusable="false">
+          <g fill="#fff" opacity=".8">
+            <rect x="8" y="0" width="40" height="16" />
+            <rect x="0" y="8" width="64" height="8" />
+          </g>
+        </svg>
+        <svg class="cloud cloud--3" viewBox="0 0 96 24" aria-hidden="true" focusable="false">
+          <g fill="#fff" opacity=".85">
+            <rect x="16" y="8" width="56" height="16" />
+            <rect x="28" y="0" width="32" height="8" />
+            <rect x="0" y="16" width="96" height="8" />
+          </g>
+        </svg>
+
+        <div class="wrap hero__copy">
+          <p class="eyebrow">Indie voxel sandbox · prototype v0.1</p>
+          <h1 id="hero-title">A whole voxel world, grown in your browser tab.</h1>
+          <p class="lede">
+            Loamlands is a creative-mode sandbox. Type a seed and it grows forested hills, alpine lakes,
+            snowy peaks and the caves underneath, then lets you walk, swim, fly and rebuild it block by
+            block. No install, no account, no store page.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="./play/">Play now</a>
+            <a class="btn btn--ghost" href="#screens">See the screens</a>
+          </div>
+        </div>
+
+        <figure class="shot shot--hero wrap">
+          <!--shot
+            name="in-game"
+            alt="Loamlands gameplay: a first-person view from a grassy terrace over an alpine lake ringed by forested hills and snow-capped peaks, with the crosshair, movement badge and nine-slot hotbar on screen."
+            sizes="(min-width: 1168px) 1112px, calc(100vw - 3.5rem)"
+            fetch="high"
+          -->
+          <figcaption class="shot__bar">
+            <span>The view from the default spawn · seed “dune”, Plains biome</span>
+            <span class="shot__tags">
+              <span class="tag">WebGL2 · three.js</span>
+              <span class="tag">152 KB gzipped</span>
+              <span class="tag">Desktop + mouse</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <div class="ground" aria-hidden="true">
+          <svg class="plant plant--tree" aria-hidden="true" viewBox="0 0 13 16" focusable="false"><use href="#tree" /></svg>
+          <svg class="plant plant--bush" aria-hidden="true" viewBox="0 0 4 4" focusable="false"><use href="#bush" /></svg>
+          <svg class="plant plant--tree-small" aria-hidden="true" viewBox="0 0 13 16" focusable="false"><use href="#tree" /></svg>
+          <svg class="strata" style="color: #7ccb45" aria-hidden="true" focusable="false">
+            <use href="#terrain" /><use href="#terrain" x="256" /><use href="#terrain" x="512" /><use href="#terrain" x="768" />
+            <use href="#terrain" x="1024" /><use href="#terrain" x="1280" /><use href="#terrain" x="1536" /><use href="#terrain" x="1792" />
+            <use href="#terrain" x="2048" /><use href="#terrain" x="2304" /><use href="#terrain" x="2560" /><use href="#terrain" x="2816" />
+            <use href="#terrain" x="3072" /><use href="#terrain" x="3328" /><use href="#terrain" x="3584" /><use href="#terrain" x="3840" />
+            <use href="#terrain" x="4096" /><use href="#terrain" x="4352" /><use href="#terrain" x="4608" /><use href="#terrain" x="4864" />
+            <use href="#terrain" x="5120" /><use href="#terrain" x="5376" /><use href="#terrain" x="5632" /><use href="#terrain" x="5888" />
+          </svg>
+        </div>
+      </section>
+
+      <section class="section section--paper" id="about" aria-labelledby="about-title">
+        <div class="wrap about">
+          <div class="about__text">
+            <p class="eyebrow">01 · The surface</p>
+            <h2 class="section__title" id="about-title">What Loamlands is</h2>
+            <p>
+              Every world grows from a seed. Layered noise decides where oceans, beaches, plains, forests,
+              deserts and mountains go, carves cave tunnels and ore veins below the surface, and plants trees
+              on top. The same seed always grows the same world, so you can hand one to a friend.
+            </p>
+            <p>
+              You start on ground the game picks for you: a level spot with an open view of the horizon. Walk
+              with WASD, jump, swim across a lake, or double-tap Space to fly. Break blocks, pick a new one
+              from the hotbar and build. When you like the view, press P to keep it.
+            </p>
+            <p class="about__caveat">
+              It is a prototype, not a finished game: creative mode only, no saving yet, and it wants a
+              desktop browser with a mouse and keyboard. The rest of this page says exactly what is in, what
+              is not, and how it is built.
+            </p>
+          </div>
+          <figure class="facts" aria-labelledby="facts-title">
+            <figcaption class="facts__head" id="facts-title">World facts</figcaption>
+            <dl>
+            <div class="facts__row"><dt>Seed</dt><dd>“dune”, or type your own</dd></div>
+            <div class="facts__row"><dt>Biomes</dt><dd>7, ocean to snowy peaks</dd></div>
+            <div class="facts__row"><dt>Blocks</dt><dd>15 types · 9-slot hotbar</dd></div>
+            <div class="facts__row"><dt>World</dt><dd>16 × 16 chunks · 128 tall</dd></div>
+            <div class="facts__row"><dt>View distance</dt><dd>3 – 12 chunks · 8 default</dd></div>
+              <div class="facts__row"><dt>Payload</dt><dd>152 KB gzipped · no asset files</dd></div>
+            </dl>
+          </figure>
+        </div>
+
+        <div class="wrap screens" id="screens">
+          <p class="eyebrow">02 · Screens</p>
+          <h2 class="section__title">Straight from the game</h2>
+          <p class="section__intro">
+            Every image on this page is a real capture of the running game, taken by a script in the
+            repository. Nothing is painted over.
+          </p>
+          <div class="screens__grid">
+            <figure class="shot shot--wide">
+              <!--shot
+                name="main-menu"
+                alt="The Loamlands title screen: a green cube logo, the Loamlands wordmark and a panel with a seed field, a Play button, Settings and Controls, floating over a live view of hills, a lake and mountains."
+                sizes="(min-width: 1168px) 1112px, calc(100vw - 3.5rem)"
+              -->
+              <figcaption>
+                <strong>The title screen.</strong> The camera floats over the actual world you are about to
+                enter, and the seed field decides which one that is.
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <!--shot
+                name="flight"
+                alt="Loamlands in creative flight: the same alpine lake seen from higher up, with a FLYING badge at the top left and the hotbar at the bottom."
+                sizes="(min-width: 1168px) 552px, (min-width: 800px) calc(50vw - 3rem), calc(100vw - 3.5rem)"
+              -->
+              <figcaption>
+                <strong>Creative flight.</strong> Double-tap Space, hold it to climb, and look down on the
+                chunked terrain while the cloud layer drifts past.
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <!--shot
+                name="settings"
+                alt="The Loamlands settings panel over a dimmed, blurred view of the world: sliders for view distance, mouse sensitivity, field of view and render scale, plus toggles for clouds, debug stats and the stats panel."
+                sizes="(min-width: 1168px) 552px, (min-width: 800px) calc(50vw - 3rem), calc(100vw - 3.5rem)"
+              -->
+              <figcaption>
+                <strong>Pause and settings.</strong> Sensitivity, field of view, render scale and view
+                distance apply the moment you move a slider, and are remembered next time.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <svg class="strata" style="color: #16211a" aria-hidden="true" focusable="false">
+          <use href="#blocks" /><use href="#blocks" x="256" /><use href="#blocks" x="512" /><use href="#blocks" x="768" />
+          <use href="#blocks" x="1024" /><use href="#blocks" x="1280" /><use href="#blocks" x="1536" /><use href="#blocks" x="1792" />
+          <use href="#blocks" x="2048" /><use href="#blocks" x="2304" /><use href="#blocks" x="2560" /><use href="#blocks" x="2816" />
+          <use href="#blocks" x="3072" /><use href="#blocks" x="3328" /><use href="#blocks" x="3584" /><use href="#blocks" x="3840" />
+          <use href="#blocks" x="4096" /><use href="#blocks" x="4352" /><use href="#blocks" x="4608" /><use href="#blocks" x="4864" />
+          <use href="#blocks" x="5120" /><use href="#blocks" x="5376" /><use href="#blocks" x="5632" /><use href="#blocks" x="5888" />
+        </svg>
+      </section>
+
+      <section class="section section--moss" id="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <p class="eyebrow">03 · Features</p>
+          <h2 class="section__title" id="features-title">What you can do</h2>
+          <p class="section__intro">
+            A small, complete creative loop rather than a long feature list. The icons below are the game's
+            own blocks, rendered from its generated textures.
+          </p>
+          <ul class="cards" role="list">
+            <li class="card">
+              <span class="card__icon"><!--icon name="grass" class="card__img"--></span>
+              <h3>Seeded worlds and biomes</h3>
+              <p>Oceans, beaches, plains, forests, deserts, rocky mountains and snowy peaks, all from layered noise. Change the seed and everything changes.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="leaves" class="card__img"--></span>
+              <h3>Caves, ores and trees</h3>
+              <p>Tunnels and caverns wind under dry land, streaked with coal and iron. Trees grow in forests and plains and keep their shape across chunk borders.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="water" class="card__img"--></span>
+              <h3>Walk, jump, swim</h3>
+              <p>Gravity, a jump that clears one block, collision with every solid block, and water you can swim across, holding Space to reach the shore.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="glass" class="card__img"--></span>
+              <h3>Creative flight</h3>
+              <p>Double-tap Space to fly and hold Shift to come down. Touch the ground and you are walking again. Sprint-fly is about five times walking speed.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="lamp" class="card__img"--></span>
+              <h3>Break and place</h3>
+              <p>Break instantly, with debris tinted by the block. Place from a nine-slot hotbar and hold the button to keep going. Fifteen block types, from grass to glowing lamp.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="stone" class="card__img"--></span>
+              <h3>Streaming chunks</h3>
+              <p>The world loads in 16 × 16 chunks around you, nearest first, on a per-frame time budget. Pick a view distance from 3 to 12 chunks and the fog follows.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="snow" class="card__img"--></span>
+              <h3>Sky, clouds and fog</h3>
+              <p>A procedural sky gradient, a drifting layer of blocky clouds, and distance fog that hides the edge of the loaded world instead of a hard cutoff.</p>
+            </li>
+            <li class="card">
+              <span class="card__icon"><!--icon name="planks" class="card__img"--></span>
+              <h3>Menus that keep up</h3>
+              <p>Pause, settings and controls share the game's blocky interface. Sensitivity, field of view, render scale, view distance and clouds apply immediately.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section section--paper" id="controls" aria-labelledby="controls-title">
+        <svg class="strata strata--hang" style="color: #16211a" aria-hidden="true" focusable="false">
+          <use href="#blocks" /><use href="#blocks" x="256" /><use href="#blocks" x="512" /><use href="#blocks" x="768" />
+          <use href="#blocks" x="1024" /><use href="#blocks" x="1280" /><use href="#blocks" x="1536" /><use href="#blocks" x="1792" />
+          <use href="#blocks" x="2048" /><use href="#blocks" x="2304" /><use href="#blocks" x="2560" /><use href="#blocks" x="2816" />
+          <use href="#blocks" x="3072" /><use href="#blocks" x="3328" /><use href="#blocks" x="3584" /><use href="#blocks" x="3840" />
+          <use href="#blocks" x="4096" /><use href="#blocks" x="4352" /><use href="#blocks" x="4608" /><use href="#blocks" x="4864" />
+          <use href="#blocks" x="5120" /><use href="#blocks" x="5376" /><use href="#blocks" x="5632" /><use href="#blocks" x="5888" />
+        </svg>
+        <div class="wrap controls-wrap">
+          <div>
+            <p class="eyebrow">04 · Controls</p>
+            <h2 class="section__title" id="controls-title">Controls</h2>
+            <p class="section__intro">
+              Desktop browser with a mouse and keyboard. Press Play and the game captures your pointer; Esc
+              hands it back. The same list lives in the game under Controls.
+            </p>
+            <p><a class="btn btn--primary" href="./play/">Play now</a></p>
+          </div>
+          <table class="controls">
+            <caption class="visually-hidden">Loamlands controls</caption>
+            <thead>
+              <tr><th scope="col">Action</th><th scope="col">Input</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Move</th><td><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></td></tr>
+              <tr><th scope="row">Look</th><td>Mouse</td></tr>
+              <tr><th scope="row">Jump · swim up · fly up</th><td><kbd>Space</kbd></td></tr>
+              <tr><th scope="row">Toggle flying</th><td><kbd>Space</kbd> ×2</td></tr>
+              <tr><th scope="row">Sprint · fly down</th><td><kbd>Shift</kbd></td></tr>
+              <tr><th scope="row">Break block</th><td>Left click <small>(hold to repeat)</small></td></tr>
+              <tr><th scope="row">Place block</th><td>Right click <small>(hold to repeat)</small></td></tr>
+              <tr><th scope="row">Choose hotbar slot</th><td><kbd>1</kbd>–<kbd>9</kbd> or Scroll</td></tr>
+              <tr><th scope="row">Pause · release the mouse</th><td><kbd>Esc</kbd></td></tr>
+              <tr><th scope="row">Save a screenshot</th><td><kbd>P</kbd></td></tr>
+              <tr><th scope="row">Show debug stats</th><td><kbd>F3</kbd></td></tr>
+              <tr><th scope="row">Hide the stats panel</th><td><kbd>H</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <svg class="strata" style="color: #0d120d" aria-hidden="true" focusable="false">
+          <use href="#blocks" /><use href="#blocks" x="256" /><use href="#blocks" x="512" /><use href="#blocks" x="768" />
+          <use href="#blocks" x="1024" /><use href="#blocks" x="1280" /><use href="#blocks" x="1536" /><use href="#blocks" x="1792" />
+          <use href="#blocks" x="2048" /><use href="#blocks" x="2304" /><use href="#blocks" x="2560" /><use href="#blocks" x="2816" />
+          <use href="#blocks" x="3072" /><use href="#blocks" x="3328" /><use href="#blocks" x="3584" /><use href="#blocks" x="3840" />
+          <use href="#blocks" x="4096" /><use href="#blocks" x="4352" /><use href="#blocks" x="4608" /><use href="#blocks" x="4864" />
+          <use href="#blocks" x="5120" /><use href="#blocks" x="5376" /><use href="#blocks" x="5632" /><use href="#blocks" x="5888" />
+        </svg>
+      </section>
+
+      <section class="section section--ink" id="tech" aria-labelledby="tech-title">
+        <div class="wrap tech">
+          <div class="tech__text">
+            <p class="eyebrow">05 · Under the surface</p>
+            <h2 class="section__title" id="tech-title">Under the surface</h2>
+            <p class="section__intro">
+              For the curious: a small, conventional WebGL2 code base with no engine beyond three.js. These
+              are the parts that matter.
+            </p>
+            <ol class="tech__list" role="list">
+              <li>
+                <h3>One draw call per chunk</h3>
+                <p>Each 16 × 16 chunk becomes at most two meshes, opaque and water. The mesher emits only faces that touch a non-opaque block and bakes directional shade and ambient occlusion into a vertex attribute, so the shader just samples a texture array and applies fog. At the default view distance that is 225 chunk meshes, about 170 draw calls after culling and 580,000 triangles.</p>
+              </li>
+              <li>
+                <h3>Streaming on a time budget</h3>
+                <p>Chunks are generated one ring beyond the view distance and meshed nearest-first inside a per-frame budget of 5 ms during play. Meshes that leave range are disposed; block data stays, so your edits survive the round trip.</p>
+              </li>
+              <li>
+                <h3>Deterministic generation</h3>
+                <p>Seeded simplex noise plus per-column hashes for trees and ores. Trees are evaluated with a three-block margin, so a canopy that crosses a chunk border is written identically on both sides.</p>
+              </li>
+              <li>
+                <h3>Nothing to download</h3>
+                <p>Seventeen 16 × 16 block textures are generated at start-up into a 2D texture array, and the hotbar icons are drawn from the same tiles. three.js is the only runtime dependency; the whole game is 152 KB gzipped.</p>
+              </li>
+              <li>
+                <h3>Tested like software</h3>
+                <p>26 unit tests cover the mesher, raycast, collision and generator. A Playwright run drives the real game in headless Chrome: breaking and placing blocks, flying, pausing, changing settings, and taking the screenshots on this page.</p>
+              </li>
+            </ol>
+          </div>
+          <aside class="terminal" aria-labelledby="terminal-title">
+            <div class="terminal__bar" id="terminal-title"><span></span><span></span><span></span>loamlands — run it locally</div>
+            <pre><code>bun install
+bun run dev         <span class="c"># site at / · game at /play/</span>
+bun run build       <span class="c"># static output in dist/</span>
+bun run check       <span class="c"># types · lint · tests</span>
+bun run screenshot  <span class="c"># retake these captures</span></code></pre>
+            <p class="terminal__note">TypeScript · three.js · Vite · Bun · Playwright · Biome</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section section--stone" id="status" aria-labelledby="status-title">
+        <svg class="strata strata--hang" style="color: #0d120d" aria-hidden="true" focusable="false">
+          <use href="#blocks" /><use href="#blocks" x="256" /><use href="#blocks" x="512" /><use href="#blocks" x="768" />
+          <use href="#blocks" x="1024" /><use href="#blocks" x="1280" /><use href="#blocks" x="1536" /><use href="#blocks" x="1792" />
+          <use href="#blocks" x="2048" /><use href="#blocks" x="2304" /><use href="#blocks" x="2560" /><use href="#blocks" x="2816" />
+          <use href="#blocks" x="3072" /><use href="#blocks" x="3328" /><use href="#blocks" x="3584" /><use href="#blocks" x="3840" />
+          <use href="#blocks" x="4096" /><use href="#blocks" x="4352" /><use href="#blocks" x="4608" /><use href="#blocks" x="4864" />
+          <use href="#blocks" x="5120" /><use href="#blocks" x="5376" /><use href="#blocks" x="5632" /><use href="#blocks" x="5888" />
+        </svg>
+        <div class="wrap">
+          <p class="eyebrow">06 · Status</p>
+          <h2 class="section__title" id="status-title">Where the project stands</h2>
+          <p class="section__intro">
+            Loamlands is a prototype built to prove one slice properly, not a commercial game. Here is the
+            honest ledger.
+          </p>
+          <div class="ledger">
+            <article class="ledger__col">
+              <h3><span class="tag tag--moss">Shipped in v0.1</span></h3>
+              <ul role="list">
+                <li>Seeded terrain with seven biomes, caves, ores and trees</li>
+                <li>Walking, jumping, swimming and creative flight</li>
+                <li>Breaking and placing 15 block types from a hotbar</li>
+                <li>Menus, live settings, clouds, fog and the P screenshot key</li>
+                <li>Unit tests and an end-to-end browser test</li>
+              </ul>
+            </article>
+            <article class="ledger__col">
+              <h3><span class="tag tag--loam">Known gaps</span></h3>
+              <ul role="list">
+                <li>Worlds do not survive a reload; edits live in memory only</li>
+                <li>Terrain is generated on the main thread, so flying far can cause brief hitches</li>
+                <li>Water is static, and lamps glow without lighting their surroundings</li>
+                <li>No sound, no day/night cycle, no touch controls</li>
+              </ul>
+            </article>
+            <article class="ledger__col">
+              <h3><span class="tag tag--sky">Next up</span></h3>
+              <ul role="list">
+                <li>Save edited chunks per seed in IndexedDB</li>
+                <li>Move meshing into Web Workers</li>
+                <li>Biome-tinted grass and leaves, and more tree species</li>
+                <li>A day/night cycle with a moving sun</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <svg class="strata" style="color: #a9d4f5" aria-hidden="true" focusable="false">
+          <use href="#blocks" /><use href="#blocks" x="256" /><use href="#blocks" x="512" /><use href="#blocks" x="768" />
+          <use href="#blocks" x="1024" /><use href="#blocks" x="1280" /><use href="#blocks" x="1536" /><use href="#blocks" x="1792" />
+          <use href="#blocks" x="2048" /><use href="#blocks" x="2304" /><use href="#blocks" x="2560" /><use href="#blocks" x="2816" />
+          <use href="#blocks" x="3072" /><use href="#blocks" x="3328" /><use href="#blocks" x="3584" /><use href="#blocks" x="3840" />
+          <use href="#blocks" x="4096" /><use href="#blocks" x="4352" /><use href="#blocks" x="4608" /><use href="#blocks" x="4864" />
+          <use href="#blocks" x="5120" /><use href="#blocks" x="5376" /><use href="#blocks" x="5632" /><use href="#blocks" x="5888" />
+        </svg>
+      </section>
+
+      <section class="cta" id="play" aria-labelledby="cta-title">
+        <div class="wrap">
+          <p class="eyebrow">07 · Play</p>
+          <h2 class="section__title" id="cta-title">Ready to dig in?</h2>
+          <p class="section__intro">
+            It runs in any desktop browser with WebGL2. Take the default seed or type your own.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="./play/">Play now</a>
+            <a class="btn btn--ghost" href="#tech">Run it locally</a>
+          </div>
+          <p class="cta__note">Free, no sign-up. Settings stay in your browser and nothing is sent anywhere.</p>
+        </div>
+        <svg class="strata" style="color: #7ccb45" aria-hidden="true" focusable="false">
+          <use href="#terrain" /><use href="#terrain" x="256" /><use href="#terrain" x="512" /><use href="#terrain" x="768" />
+          <use href="#terrain" x="1024" /><use href="#terrain" x="1280" /><use href="#terrain" x="1536" /><use href="#terrain" x="1792" />
+          <use href="#terrain" x="2048" /><use href="#terrain" x="2304" /><use href="#terrain" x="2560" /><use href="#terrain" x="2816" />
+          <use href="#terrain" x="3072" /><use href="#terrain" x="3328" /><use href="#terrain" x="3584" /><use href="#terrain" x="3840" />
+          <use href="#terrain" x="4096" /><use href="#terrain" x="4352" /><use href="#terrain" x="4608" /><use href="#terrain" x="4864" />
+          <use href="#terrain" x="5120" /><use href="#terrain" x="5376" /><use href="#terrain" x="5632" /><use href="#terrain" x="5888" />
+        </svg>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="site-footer__top">
+          <div>
+            <a class="brand" href="#top">
+              <svg class="brand__mark" aria-hidden="true" focusable="false"><use href="#cube" /></svg>
+              <span class="brand__name">Loamlands</span>
+            </a>
+            <p class="site-footer__tagline">An original indie voxel sandbox prototype, grown in your browser.</p>
+          </div>
+          <nav aria-label="Footer">
+            <ul class="site-footer__nav">
+              <li><a href="./play/">Play now</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#screens">Screens</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#controls">Controls</a></li>
+              <li><a href="#tech">Under the surface</a></li>
+              <li><a href="#status">Status</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="site-footer__legal">
+          <p>
+            Loamlands is an independent project. It is not Minecraft and is not affiliated with, endorsed by
+            or connected to Mojang Studios or Microsoft. Every texture and icon is generated in code.
+          </p>
+          <p>© 2026 Loamlands · Built with three.js, Vite and Bun.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
