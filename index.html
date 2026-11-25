@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f3e9" />
+    <meta
+      name="description"
+      content="Explore Alder Basin in Bracken Vale, a creative voxel sandbox for your browser. See the valley, learn the controls, and play the alpha."
+    />
+    <link rel="icon" href="/field/cube.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/site/site.css" />
+    <title>Bracken Vale — A creative voxel wilderness</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="masthead" id="top">
+      <div class="wrap mast-row">
+        <a class="brand" href="#top" aria-label="Bracken Vale home">
+          <img src="/field/cube.svg" width="42" height="44" alt="" />
+          <span>BRACKEN VALE<small>FIELDWORK GAME STUDIO</small></span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Sections">
+          <a href="#world">The world</a><a href="#captures">Captures</a>
+          <a href="#guide">Field guide</a><a href="#build">Build notes</a>
+        </nav>
+        <div class="mast-actions">
+          <a class="button ink nav-play" href="/play/"
+            >Play alpha <svg aria-hidden="true"><use href="/field/symbols.svg#up-right" /></svg
+          ></a>
+          <button
+            hidden
+            type="button"
+            id="nav-toggle"
+            class="nav-toggle"
+            aria-label="Open navigation"
+            aria-expanded="false"
+            aria-controls="site-nav"
+          >
+            <svg aria-hidden="true"><use href="/field/symbols.svg#menu" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="game-title">
+        <div class="wrap hero-layout">
+          <div class="hero-copy">
+            <div class="kicker hero-kicker">
+              <span class="dash"></span> FIELDWORK SERIES <span class="divider">/</span> VOL. 01
+            </div>
+            <h1 id="game-title">BRACKEN<br />VALE<span>.</span></h1>
+            <p>
+              A creative voxel wilderness. Walk the riverbank, fly the ridgeline, and shape a
+              mountain valley one block at a time.
+            </p>
+            <div class="hero-actions">
+              <a class="button orange" href="/play/"
+                ><svg aria-hidden="true"><use href="/field/symbols.svg#play" /></svg> Play Bracken
+                Vale</a
+              >
+              <a class="text-link" href="#guide"
+                >Field guide <svg aria-hidden="true"><use href="/field/symbols.svg#down" /></svg
+              ></a>
+            </div>
+          </div>
+          <figure class="hero-plate">
+            <div class="hero-photo">
+              <!--capture:hero-->
+              <span class="plate-tag"
+                ><svg aria-hidden="true"><use href="/field/symbols.svg#camera" /></svg> IN-GAME
+                CAPTURE</span
+              >
+              <span class="north-mark" aria-hidden="true"
+                ><b>N</b
+                ><svg viewBox="0 0 22 24">
+                  <path d="m11 1 8 21-8-5z" fill="#f5f3e9" />
+                  <path d="m11 1-8 21 8-5z" fill="#24362c" /></svg
+              ></span>
+            </div>
+            <figcaption>
+              <span class="plate-number">FIG. 01</span
+              ><span class="plate-name">Alder Basin <small> / &nbsp; Spawn overlook</small></span>
+              <a
+                id="hero-expand"
+                href="#captures"
+                aria-label="See full gameplay capture"
+                title="See full gameplay capture"
+                ><svg aria-hidden="true"><use href="/field/symbols.svg#expand" /></svg
+              ></a>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <div class="spec-strip">
+        <dl class="wrap specs">
+          <div>
+            <dt>
+              <svg aria-hidden="true"><use href="/field/symbols.svg#signal" /></svg>BUILD STATUS
+            </dt>
+            <dd>Playable alpha <small>0.1.0</small></dd>
+          </div>
+          <div>
+            <dt>
+              <svg aria-hidden="true"><use href="/field/symbols.svg#cube" /></svg>WORLD SEED
+            </dt>
+            <dd>001847 <small>Alder Basin</small></dd>
+          </div>
+          <div>
+            <dt>
+              <svg aria-hidden="true"><use href="/field/symbols.svg#screen" /></svg>PLATFORM
+            </dt>
+            <dd>Desktop browser</dd>
+          </div>
+          <div>
+            <dt>
+              <svg aria-hidden="true"><use href="/field/symbols.svg#compass" /></svg>GAME MODE
+            </dt>
+            <dd>Creative sandbox</dd>
+          </div>
+        </dl>
+      </div>
+
+      <section class="wrap section" id="world" aria-labelledby="world-title">
+        <div class="section-heading">
+          <div>
+            <div class="kicker"><span class="section-index">01</span> THE WORLD</div>
+            <h2 id="world-title">Inside the vale<span>.</span></h2>
+          </div>
+          <p>From the snowline to the riverbed, the landscape is yours to explore and edit.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="specimen meadow">
+              <span class="spec-id">PLATE / 01</span
+              ><img src="/field/terrain.svg" width="280" height="160" alt="" loading="lazy" /><span
+                class="cross"
+                aria-hidden="true"
+                >+</span
+              >
+            </div>
+            <div class="feature-copy">
+              <h3>Follow the terrain</h3>
+              <p>
+                Seeded terrain shifts from pine groves to sand, stone, and snowy peaks. Follow the
+                eastern bank to a cave mouth.
+              </p>
+            </div>
+          </article>
+          <article class="feature">
+            <div class="specimen sky">
+              <span class="spec-id">PLATE / 02</span
+              ><img src="/field/flight.svg" width="280" height="160" alt="" loading="lazy" /><span
+                class="cross"
+                aria-hidden="true"
+                >+</span
+              >
+            </div>
+            <div class="feature-copy">
+              <h3>Leave the ground</h3>
+              <p>
+                Walk and jump under gravity, then switch to creative flight. Rise above the treetops
+                as procedural clouds drift over the basin.
+              </p>
+            </div>
+          </article>
+          <article class="feature">
+            <div class="specimen clay">
+              <span class="spec-id">PLATE / 03</span
+              ><img src="/field/build.svg" width="280" height="160" alt="" loading="lazy" /><span
+                class="cross"
+                aria-hidden="true"
+                >+</span
+              >
+            </div>
+            <div class="feature-copy">
+              <h3>Build into the valley</h3>
+              <p>
+                Cut steps into a bluff, span the river with timber, or take the trail shelter apart.
+                Eight materials sit in your hotbar.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="archive" id="captures" aria-labelledby="captures-title">
+        <div class="wrap section">
+          <div class="section-heading">
+            <div>
+              <div class="kicker"><span class="section-index">02</span> FIELD CAPTURES</div>
+              <h2 id="captures-title">From the build<span>.</span></h2>
+            </div>
+            <p>Two views of the same seed. Open a frame to inspect the original composition.</p>
+          </div>
+          <div class="gallery">
+            <figure class="gallery-plate">
+              <div class="shot"><!--capture:world--></div>
+              <figcaption>
+                <span class="plate-number">FIG. 01</span>
+                <div>
+                  <h3>On the starting bluff</h3>
+                  <p>In-game view · Hotbar and compass</p>
+                </div>
+                <svg class="expand-hint" aria-hidden="true">
+                  <use href="/field/symbols.svg#expand" />
+                </svg>
+              </figcaption>
+            </figure>
+            <figure class="gallery-plate">
+              <div class="shot"><!--capture:menu--></div>
+              <figcaption>
+                <span class="plate-number">FIG. 02</span>
+                <div>
+                  <h3>Before the first step</h3>
+                  <p>Title screen · Alder Basin overlook</p>
+                </div>
+                <svg class="expand-hint" aria-hidden="true">
+                  <use href="/field/symbols.svg#expand" />
+                </svg>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="manual" id="guide" aria-labelledby="guide-title">
+        <div class="wrap section manual-layout">
+          <div class="manual-intro">
+            <div class="kicker"><span class="section-index">03</span> FIELD GUIDE</div>
+            <h2 id="guide-title">
+              Get your<br />
+              bearings<span>.</span>
+            </h2>
+            <p>
+              Enter the world to capture the mouse. Press <kbd>Esc</kbd> to release it and pause.
+              You can adjust look sensitivity and view distance from Settings.
+            </p>
+            <div class="manual-label">
+              <svg aria-hidden="true"><use href="/field/symbols.svg#keyboard" /></svg> KEYBOARD +
+              MOUSE
+            </div>
+          </div>
+          <dl class="controls">
+            <div>
+              <dt>Move / look</dt>
+              <dd><kbd>WASD</kbd><span>/</span><kbd>Mouse</kbd></dd>
+            </div>
+            <div>
+              <dt>Jump / swim up</dt>
+              <dd><kbd>Space</kbd></dd>
+            </div>
+            <div>
+              <dt>Toggle flight</dt>
+              <dd><kbd>F</kbd><span>or double-tap</span><kbd>Space</kbd></dd>
+            </div>
+            <div>
+              <dt>Fly up / down</dt>
+              <dd><kbd>Space</kbd><span>/</span><kbd>Shift</kbd></dd>
+            </div>
+            <div>
+              <dt>Break / place block</dt>
+              <dd><kbd>Left click</kbd><span>/</span><kbd>Right click</kbd></dd>
+            </div>
+            <div>
+              <dt>Select material</dt>
+              <dd><kbd>1–8</kbd><span>or</span><kbd>Wheel</kbd></dd>
+            </div>
+            <div>
+              <dt>Pause / save screenshot</dt>
+              <dd><kbd>Esc</kbd><span>/</span><kbd>P</kbd></dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="wrap section" id="build" aria-labelledby="build-title">
+        <div class="kicker"><span class="section-index">04</span> BUILD NOTES</div>
+        <h2 id="build-title">Under the surface<span>.</span></h2>
+        <div class="build-grid">
+          <div class="technical">
+            <article>
+              <span class="note-id">A /</span>
+              <div>
+                <h3>One seed, many chunks</h3>
+                <p>
+                  Coordinates and seed 1847 determine the river, ridges, and tree cover. The game
+                  streams 16 × 16-block chunks around you; the view-distance slider sets the radius
+                  from three to nine chunks.
+                </p>
+              </div>
+            </article>
+            <article>
+              <span class="note-id">B /</span>
+              <div>
+                <h3>Skip the buried faces</h3>
+                <p>
+                  The Three.js renderer draws one mesh per chunk, leaving buried block faces out. An
+                  edit rebuilds the affected geometry, including faces revealed across a chunk
+                  border.
+                </p>
+              </div>
+            </article>
+          </div>
+          <aside class="status-note">
+            <div class="kicker"><span class="status-dot"></span> DEVELOPMENT STATUS</div>
+            <h3>Playable alpha <small>0.1.0</small></h3>
+            <p>
+              A local, single-player creative prototype. Your blocks stay put when you leave a
+              chunk, but refreshing the tab resets the world. Settings survive a reload.
+            </p>
+            <div class="status-foot">
+              <img src="/mark.svg" width="22" height="22" alt="" /> FIELDWORK GAME STUDIO
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="launch" aria-labelledby="launch-title">
+        <div class="wrap launch-row">
+          <div>
+            <div class="kicker"><span class="dash"></span> SEED 001847 / ALDER BASIN</div>
+            <h2 id="launch-title">Step into the vale.</h2>
+            <p>No install. Bring a desktop browser, a keyboard, and a mouse.</p>
+          </div>
+          <a class="button ink" href="/play/"
+            ><svg aria-hidden="true"><use href="/field/symbols.svg#play" /></svg> Launch the game</a
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="wrap foot-row">
+        <a class="brand" href="#top" aria-label="Bracken Vale, back to top"
+          ><img src="/field/cube.svg" width="34" height="36" alt="" /><span
+            >BRACKEN VALE<small>FIELDWORK GAME STUDIO</small></span
+          ></a
+        >
+        <p>Fieldwork Series <span>/</span> Volume 01</p>
+        <a class="text-link" href="#top"
+          >Back to top <svg aria-hidden="true"><use href="/field/symbols.svg#up" /></svg
+        ></a>
+      </div>
+    </footer>
+
+    <dialog id="viewer" aria-labelledby="viewer-title">
+      <div class="viewer-bar">
+        <h2 id="viewer-title">Field capture</h2>
+        <button type="button" id="close-viewer" aria-label="Close expanded capture">
+          <svg aria-hidden="true"><use href="/field/symbols.svg#close" /></svg>
+        </button>
+      </div>
+      <img id="viewer-image" width="1600" height="900" alt="" />
+      <div class="viewer-foot">
+        <span id="frame-count"></span>
+        <div>
+          <button type="button" id="prev-frame" aria-label="Previous capture">←</button
+          ><button type="button" id="next-frame" aria-label="Next capture">→</button>
+        </div>
+      </div>
+    </dialog>
+    <script type="module" src="/site/enhance.ts"></script>
+  </body>
+</html>
